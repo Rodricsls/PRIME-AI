@@ -1,0 +1,29 @@
+.datos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.datos .nombres{
+    width: 45%;
+}
+
+
+
+
+.datos .apellidos{
+    width: 45%;
+}
+
+.warning{
+    color: red;
+}
+
+
+.valid{
+    color:#86BE54;
+}
+
+.SignUp{
+    color:#3996D4 ;
+}
