@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import SignUp from './components/SignUp'
-import Login from './components/Login'
+import SignUp from './components/SignUp/SignUp'
+import Login from './components/Login/Login'
 
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
 

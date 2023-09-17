@@ -1,0 +1,42 @@
+.datos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.datos .nombres{
+    width: 45%;
+}
+
+
+
+
+.datos .apellidos{
+    width: 45%;
+}
+
+.warning{
+    color: red;
+}
+
+
+.valid{
+    color:#6dbf26 ;
+}
+
+.container .Box .SignUp{
+    background-color:#6dbf26 ;
+    color: F5FAFF;
+    border-radius:20px ;
+}
+.container .Box .SignUp:disabled{
+    border-radius:20px ;
+    background-color:#b6b6b6  ;
+    color: F5FAFF;
+}
+
+.container .Box .SignUp:hover{
+    background-color:#6dbf26 ;
+    color:#F5FAFF;
+    transform: scale(1.009) ;
+}

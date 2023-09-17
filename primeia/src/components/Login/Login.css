@@ -1,0 +1,24 @@
+.Links{
+    text-decoration: none;
+    color:white;
+}
+
+.container .Button{
+    background-color: #3996D4;
+    border-radius: 20px;
+    color:#F5FAFF;
+}
+.container .Button:hover{
+    background-color: #21457F;
+    color:#F5FAFF;
+    transform: scale(1.009) ;
+
+}
+
+.container .Box .TextField:focus{
+    border-color: #F5FAFF;
+}
+
+
+
+
