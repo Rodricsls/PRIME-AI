@@ -2,6 +2,7 @@ const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const bcrypt = require("bcrypt");
+const AI = require('./AI');
 
 module.exports = (app) => {
     //Endpoint /login verifica si existe el usuario
