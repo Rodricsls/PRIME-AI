@@ -4,6 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import SignUp from './components/SignUp/SignUp'
 import Login from './components/Login/Login'
+import Home from './components/Home/Home'
+import MiPerfil from './components/MiPerfil/MiPerfil'
 
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
 
@@ -15,6 +17,14 @@ const router = createBrowserRouter([
   {
     path:'/SignUp',
     element:<SignUp/>
+  },
+  {
+    path: '/Home',
+    element:<Home/>
+  },
+  {
+    path: '/MiPerfil',
+    element:<MiPerfil/>
   }
 ]);
 

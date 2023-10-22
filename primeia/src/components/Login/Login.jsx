@@ -12,12 +12,12 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 import './Login.css';
 
 
 import { FitnessCenter, SportsGymnastics } from '@mui/icons-material';
-
 
 function newPage() {
   return(
@@ -29,28 +29,20 @@ const defaultTheme = createTheme();
 
 export default function App() {
 
-  
-  
-  const login = () => {
-    if(email === "" || password === ""){
-      alert("Por favor complete ambos campos");
-    }else{
-      alert("Su usuario es" + email + " y su contraseña es: " + password);
-      <newPage/>
-    }
-  }
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, SetValid]=React.useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try{  
       const response = await axios.post('http://localhost:8888/login',{correo:email, contraseña:password});
       const data= response.data;
-      console.log(data.autenticacion);
+      //console.log(data);
       if(data.autenticacion){
         alert('Usuario autenticado');
+        navigate("/Home", {state:{email:email}});
         SetValid(false);
       }else{
         SetValid(true);
