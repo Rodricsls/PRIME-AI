@@ -21,6 +21,7 @@
     "pg": "^8.11.3",
     "postgres": "^3.3.5"
   },
+  "type":"commonjs",
   "devDependencies": {
     "nodemon": "^3.0.1"
   }

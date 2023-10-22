@@ -91,7 +91,7 @@ export default function SignUp() {
   }
 
  
-  const handleSubmit = async (event) => {
+  /*const handleSubmit = async (event) => {
     event.preventDefault();
     try{     
       const response = await axios.post('http://localhost:8888/check-usuario',{correo:email});
@@ -105,7 +105,7 @@ export default function SignUp() {
     }catch(error){
       alert("Hubo un error", error);
     }
-  };
+  };*/
 
 
   //Chequea que la contraseña y la confirmación sean iguales
@@ -159,8 +159,8 @@ export default function SignUp() {
               Sign Up
             </Typography>
 
-            <Box className='Box' component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 0 }}>
-              <div className='datos'>
+            <Box className='Box' component="form" noValidate sx={{ mt: 0 }}>
+              <div className='datos'> 
               <TextField className='nombres'
                     color='success'
                     margin="normal"
@@ -256,21 +256,24 @@ export default function SignUp() {
                     </div>
                     </Grid>
                 </Grid>
-              
-              <Button
-                className='SignUp'
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 2, mb: 2}}
-                disabled={!allRequirementsMet || !passwordcheck}
-                startIcon={<EmojiEventsSharp/>}
-                onClick={handleSubmit}
-              >
-                Registrar
-              </Button>
-              
-              <Copyright sx={{ mt: 0 }} />
+                <Link className='Links' to={"/Cuestionario"}>
+
+                  <Button
+                      className='SignUp'
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 2, mb: 2}}
+                      disabled={!allRequirementsMet || !passwordcheck}
+                      startIcon={<EmojiEventsSharp/>}
+
+                    >
+                      Registrar
+                    </Button>
+                </Link>
+                    
+                
+                  <Copyright sx={{ mt: 0 }} />
             </Box>
 
           </Box>

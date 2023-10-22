@@ -3,7 +3,6 @@ const {dbase} = require('./config');
 require('dotenv').config();
 
 const pool =new Pool({
-
     user: String(process.env.DB_USER),
     password:String(process.env.DB_PASSWORD),
     host:String(process.env.DB_HOST),
