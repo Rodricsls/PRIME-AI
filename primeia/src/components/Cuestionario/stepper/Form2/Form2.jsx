@@ -19,31 +19,31 @@ export default function CheckboxLabels(props) {
 
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox name="domingo" onChange={handleDiaChange} />}
+          control={<Checkbox name="domingo" onChange={props.handleDiaChange} />}
           label="Domingo"
         />
         <FormControlLabel
-          control={<Checkbox name="lunes" onChange={handleDiaChange} />}
+          control={<Checkbox name="lunes" onChange={props.handleDiaChange} />}
           label="Lunes"
         />
         <FormControlLabel
-          control={<Checkbox name="martes" onChange={handleDiaChange} />}
+          control={<Checkbox name="martes" onChange={props.handleDiaChange} />}
           label="Martes"
         />
         <FormControlLabel
-          control={<Checkbox name="miercoles" onChange={handleDiaChange} />}
+          control={<Checkbox name="miercoles" onChange={props.handleDiaChange} />}
           label="Miercoles"
         />
         <FormControlLabel
-          control={<Checkbox name="jueves" onChange={handleDiaChange} />}
+          control={<Checkbox name="jueves" onChange={props.handleDiaChange} />}
           label="Jueves"
         />
         <FormControlLabel
-          control={<Checkbox name="viernes" onChange={handleDiaChange} />}
+          control={<Checkbox name="viernes" onChange={props.handleDiaChange} />}
           label="Viernes"
         />
         <FormControlLabel
-          control={<Checkbox name="sabado" onChange={handleDiaChange} />}
+          control={<Checkbox name="sabado" onChange={props.handleDiaChange} />}
           label="Sabado"
         />
       </FormGroup>
