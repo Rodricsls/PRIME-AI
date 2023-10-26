@@ -11,7 +11,10 @@ import Form1 from './Form1/Form1';
 import Form3 from './Form 3/Form3';
 import {Link} from 'react-router-dom';
 import { Route } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import './Cuestionario.css';
+import { Password } from '@mui/icons-material';
 
 
 export default function Cuestionario() {
@@ -29,6 +32,19 @@ export default function Cuestionario() {
     viernes: false,
     sabado: false
   });
+  //Obteniendo informacion enviada desde Cuestionario
+  const location = useLocation();
+  const navigate = useNavigate();
+  const name = location.state.Nombre;
+  const apellido = location.state.Apellido;
+  const email = location.state.Email;
+  const password = location.state.Password;
+  const confirmpassword = location.state.ConfirmedPassword;
+  console.log('Primer Nombre: ' + name);
+  console.log('Apellido: ' + apellido);
+  console.log('Email: ' + email);
+  console.log('Password: ' + password);
+  console.log('Password Confirmada: ' + confirmpassword);
 
   const handleEdadChange = (event) => {
     setEdad(event.target.value);
