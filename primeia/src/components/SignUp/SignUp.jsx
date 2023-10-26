@@ -13,6 +13,7 @@ import {Link} from 'react-router-dom';
 import './SignUp.css';
 import { EmojiEventsSharp } from '@mui/icons-material';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 //Función de Copyrigth
 
 function Copyright(props) {
@@ -44,6 +45,9 @@ export default function SignUp() {
   const [showPassword, setShowPassword]=React.useState(false);
   const [allRequirementsMet, setAllRequirementsMet]=React.useState(false);
   const [valid, SetValid]=React.useState(false);
+
+  //Navigate funciona para moverse entre componentes de react-router
+  const navigate = useNavigate();
 
   const user={correo:email,
               contraseña:password,
@@ -126,6 +130,11 @@ export default function SignUp() {
       }else{
           return false
       }
+  }
+
+  //Funcion para moverse al cuestionario
+  function Registrar(){
+    navigate("/Cuestionario", {state:{Nombre:name, Apellido:apellido ,Email:email, Password:password, ConfirmedPassword:confirmpassword}});
   }
 
   const passwordcheck=passwordcheck_value();
@@ -256,7 +265,7 @@ export default function SignUp() {
                     </div>
                     </Grid>
                 </Grid>
-                <Link className='Links' to={"/Cuestionario"}>
+                
 
                   <Button
                       className='SignUp'
@@ -266,11 +275,11 @@ export default function SignUp() {
                       sx={{ mt: 2, mb: 2}}
                       disabled={!allRequirementsMet || !passwordcheck}
                       startIcon={<EmojiEventsSharp/>}
-
+                      onClick={() => Registrar()}
                     >
                       Registrar
                     </Button>
-                </Link>
+                
                     
                 
                   <Copyright sx={{ mt: 0 }} />
