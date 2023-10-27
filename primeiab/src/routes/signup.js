@@ -33,7 +33,7 @@ module.exports = (app) => {
 
             // Generate workout routine using AI model
             const days=Routine_AI.Dias(req.body.dias);
-            const peticion= Routine_AI.createRequest(req.body.Tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo);
+            const peticion= Routine_AI.createRequest(req.body.Tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
             const routine= await Routine_AI.RoutineRequest(peticion);
             let routine_array=Routine_AI.Parser(routine);
 

@@ -33,8 +33,8 @@ function Dias(dias){
 
 
 /*Creamos la petición para el modelo*/
-function createRequest(Tipo_ejercicio,edad,peso,altura,dedicacion,dias,tiempo, equipo){
-    request="Crea una rutina de "+Tipo_ejercicio+" para una persona hombre de "+edad+" años que pesa "+peso+" libras, mide "+altura+" cm y se dedica "+dedicacion+" a la actividad física. Esta persona puede entrenar los días"+dias+" con un tiempo máximo de "+tiempo+" por sesión, y "+equipo+" de equipo de entrenamiento."
+function createRequest(Tipo_ejercicio,edad,peso,altura,dedicacion,dias,tiempo, equipo,genero){
+    request="Crea una rutina de "+Tipo_ejercicio+" para una persona "+genero+" de "+edad+" años que pesa "+peso+" libras, mide "+altura+" cm y se dedica "+dedicacion+" a la actividad física. Esta persona puede entrenar los días"+dias+" con un tiempo máximo de "+tiempo+" por sesión, y "+equipo+" de equipo de entrenamiento."
     
     return request
 }
