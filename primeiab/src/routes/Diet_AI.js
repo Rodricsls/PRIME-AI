@@ -32,9 +32,9 @@ async function DietRequest(request){
             stop:["\n"]
         
           });
-          console.log(response.choices[0].text);
+
           let incidencias = response.choices[0].text.match(regex);
-          console.log(incidencias);
+
           if(incidencias.length<21 || incidencias==null){
               return await DietRequest(request);
           }else{
@@ -59,25 +59,13 @@ function Parser(dietas){
 function simplifier(array){
     const dieta = [];
     for(i=0; i<array.length; i++){
-        const dia = array[i];
-        const tiempo = array[1];
-        const comida = array[2];
+        const dia = array[i][0];
+        const tiempo = array[i][1];
+        const comida = array[i][2];
         
         dieta.push({dia:dia, tiempo:tiempo, comida:comida});
     }
     return dieta;
 }
 
-//create a test request 
-const text = createRequest("Ganancia Muscular", 19, 180, 120, "demasiado", " no puede consumir gluten");
-
-//we do a diet request to the AI model  
-const result = DietRequest(text);
-
-//we divide the response into an array of arrays    
-const dietas = Parser(result);
-
-//simplify each element of the array into an object
-const dieta = simplifier(dietas);
-
-console.log(dieta);
+module.exports = {createRequest, DietRequest, Parser, simplifier};

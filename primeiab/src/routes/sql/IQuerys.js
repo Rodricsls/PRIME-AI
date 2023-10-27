@@ -11,11 +11,12 @@ const User = `INSERT INTO usuario (correo, contraseña, nombre, apellido, peso, 
 /* consulta para crear una nueva rutina */
 const dieta = `INSERT INTO dieta (objetivo) VALUES ($1)`;
 /* consulta para asignar una nueva dieta */
-const dieta_asignar = `INSERT INTO asignar_dieta (correo, id_dieta) VALUES ($1, $2)`;
+const dieta_asignar = `INSERT INTO asignar_dietas (correo, id_dieta) VALUES ($1, $2)`;
 /* consulta para crear un nuevo plato */
-const plato=`INSERT INTO plato (dia, descripcion, tiempo) VALUES ($1, $2, $3)`;
+const plato=`INSERT INTO platos (dia, descripcion, tiempo) VALUES ($1, $2, $3)`;
 /* consulta para agregar un nuevo plato*/
-const agregar_plato=`INSERT INTO agregar_plato (id_dieta, id_plato) VALUES ($1, $2)`;
+const agregar_plato=`INSERT INTO platos_agregados (id_dieta, id_plato, dia) VALUES ($1, $2, $3)`;
+
 
 module.exports={
     Rutina,

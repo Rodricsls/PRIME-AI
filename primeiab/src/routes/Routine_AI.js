@@ -58,19 +58,14 @@ async function RoutineRequest(request){
         
           });
           //Si hay menos 7 incidencias o el match es null se vuelve a generar un rutina, sino se regresa arreglo con las incidencias
-          console.log(response.choices[0].text);
           let aux=response.choices[0].text.match(regex);
-          console.log(aux);
           let zero_duplicates=[];
           if(aux!=null){
             zero_duplicates=aux.filter((item, index) => aux.indexOf(item) === index);
           }
-          console.log(zero_duplicates);
           if(response.choices[0].text.match(regex)!=null && zero_duplicates.length > 7 ){
-            console.log(zero_duplicates);
             return zero_duplicates;
           }else{
-            console.log("Volvi a pedir :(");
             return await(RoutineRequest(request));
           }
 
