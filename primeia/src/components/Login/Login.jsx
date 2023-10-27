@@ -13,42 +13,57 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
 
 import './Login.css';
 
 
 import { FitnessCenter, SportsGymnastics } from '@mui/icons-material';
 
-function newPage() {
-  return(
-    <h1>NUEVA PAGINA</h1>
-  )
-}
+
 
 const defaultTheme = createTheme();
 
 export default function App() {
-
+  //Constantes a utilizar en el componente
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, SetValid]=React.useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
 
+  const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
+  const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
+  const [MensajeError, setMensajeError] = useState('');
+
+
+  //Funcion para cerrar el snackbar de exito
+  const SnackbarSuccessClose = () => {
+        setSnackbarSuccessOpen(false);
+      };
+
+  //Funcion para cerrar el snackbar de error
+  const SnackbarFailClose = () => {
+        setSnackbarFailOpen(false);
+      };
+
+  //Funcion para enviar los datos del formulario y hacer Login      
   const handleSubmit = async (event) => {
     event.preventDefault();
     try{  
       const response = await axios.post('http://localhost:8888/login',{correo:email, contraseña:password});
       const data= response.data;
-      //console.log(data);
       if(data.autenticacion){
-        alert('Usuario autenticado');
-        navigate("/Home", {state:{email:email}});
+        setSnackbarSuccessOpen(true);
+        navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
         SetValid(false);
       }else{
         SetValid(true);
       }
     }catch(error){
-      alert("Hubo un error", error);
+      setMensajeError('Ha ocurrido un error')
+      setSnackbarFailOpen(true);
     }
   };
 
@@ -137,6 +152,17 @@ export default function App() {
             </Box>
           </Grid>
         </Grid>
+          <Snackbar open={SnackbarSuccessOpen} autoHideDuration={6000} onClose={SnackbarSuccessClose}>
+              <MuiAlert elevation={6} variant="filled" onClose={SnackbarSuccessClose} severity="success" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+                Cuenta Autenticada!
+              </MuiAlert>
+            </Snackbar>
+
+            <Snackbar open={SnackbarFailOpen} autoHideDuration={6000} onClose={SnackbarFailClose}>
+              <MuiAlert elevation={6} variant="filled" onClose={SnackbarFailClose} severity="error" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+                {MensajeError}
+              </MuiAlert>
+            </Snackbar>
       </ThemeProvider>
   );
 }

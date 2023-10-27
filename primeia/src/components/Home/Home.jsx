@@ -12,10 +12,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
@@ -29,32 +27,31 @@ import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import MiPerfil from '../MiPerfil/MiPerfil';
 import MisRutinas from '../Rutinas/MisRutinas';  
+import MisDietas from '../Dietas/MisDietas';
 
-const drawerWidth = 240;
-const settings = ['Mi Perfil', 'Cerrar Sesion'];
-const paginas = ['Home' , 'Mis Rutinas' , 'Mi Dieta']
+const drawerWidth = 240; //ancho del drawer
+const settings = ['Mi Perfil', 'Cerrar Sesion']; //opciones del menu de usuario
+const paginas = ['Home' , 'Mis Rutinas' , 'Mi Dieta'] //opciones del drawer
 
 export default function Home() {
-
+  //Constantes a utilizar en el componente
   const [HomePage, setHomePage] = useState(true);
   const [MyProfilePage, setMyProfilePage] = useState(false);
   const [RutinasPage, setRutinasPage] = useState(false);
   const [DietasPage, setDietasPage] = useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation(); //location utilizado para obtener el correo del usuario proveniente del login
+  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [peso, setPeso] = useState(0);
   const [estatura, setEstatura] = useState(0);
   const [edad, setEdad] = useState(0);
   const [imagen_usuario, setImagenUsuario] = useState('');
-
-
   const correo =location.state.email;
  
 
-  
+  //Funcion para obtener la informacion del usuario
   async function getData(Email){
     try{
       //console.log(Email);
@@ -76,45 +73,58 @@ export default function Home() {
       }
   }
 
+  //useEffect utilizado para obtener la informacion del usuario al cargar la pagina
   useEffect( () => {
     
     getData(correo); 
     
   } , [])
 
-    
+    //Funcion para abrir el menu de usuario
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     }; 
-
+    //Funcion para cerrar el menu de usuario
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
+    //Funcion para manejar las opciones del menu de usuario
     function handleProfileOptions(option) {
-          if(option == "Mi Perfil"){
+          if(option === "Mi Perfil"){
             setMyProfilePage(true);
             setHomePage(false);
             setRutinasPage(false);
             setDietasPage(false);
             setAnchorElUser(null);
+          }else if(option === "Cerrar Sesion"){
+            navigate('/'); //navegamos a la pagina de login
           }
         
     }
 
+    //Funcion para manejar las opciones del drawer
     function NavigationSelect(pagina){
-        if(pagina == "Home"){
+        if(pagina === "Home"){
           setMyProfilePage(false);
           setHomePage(true);
           setRutinasPage(false);
           setDietasPage(false);
-        }else if(pagina == "Mis Rutinas"){
+
+        }else if(pagina === "Mis Rutinas"){
           setMyProfilePage(false);
           setHomePage(false);
           setRutinasPage(true);
           setDietasPage(false);
+        }else if(pagina === "Mi Dieta"){
+          setMyProfilePage(false);
+          setHomePage(false);
+          setRutinasPage(false);
+          setDietasPage(true);
         }
     }
+
+    
 
 
 
@@ -210,12 +220,13 @@ export default function Home() {
           </List>
         </Box>
       </Drawer>
-      
+              
         
            
              
               {MyProfilePage ? <MiPerfil email={correo} nombre = {nombre} apellido = {apellido} peso = {peso} estatura ={estatura} edad = {edad} imagen_usuario = {imagen_usuario} />: ''}
-              {RutinasPage ? <MisRutinas /> : ''}
+              {RutinasPage ? <MisRutinas email={correo} /> : ''}
+              {DietasPage ? <MisDietas email={correo} /> : ''}
             
             
         

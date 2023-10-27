@@ -45,45 +45,30 @@ import { useState } from "react";
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 240;
-const settings = ['Mi Perfil', 'Cerrar Sesion'];
-const paginas = ['Home' , 'Mis Rutinas' , 'Mi Dieta']
-
 export default function MisRutinas(props) {
+    //Constantes a utilizar en el componente
     const Hoy = new Date();
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
     const location = useLocation();
     const navigate = useNavigate();
-    const [Day, setDay] = React.useState(Hoy.getDay());
-    /*const [Lunes, setLunes] = useState(true);
-    const [Martes, setMartes] = useState(false);
-    const [Miercoles, setMiercoles] = useState(false);
-    const [Jueves, setJueves] = useState(false);
-    const [Viernes, setViernes] = useState(false);
-    const [Sabado, setSabado] = useState(false);
-    const [Domingo, setDomingo] = useState(false);*/
-
-
-
-  
+    const [Day, setDay] = React.useState(Hoy.getDay());//Obtenemos que dia es hoy
+    console.log(Day);
     
-
+    // Informacion de rutina para cada dia
+    const [rutinaLunes, setRutinaLunes] = useState([]);
+    const [rutinaMartes, setRutinaMartes] = useState([]);
+    const [rutinaMiercoles, setRutinaMiercoles] = useState([]);
+    const [rutinaJueves, setRutinaJueves] = useState([]);
+    const [rutinaViernes, setRutinaViernes] = useState([]);
+    const [rutinaSabado, setRutinaSabado] = useState([]);
+    const [rutinaDomingo, setRutinaDomingo] = useState([]);
+    const [NombreRutina, setNombreRutina] = useState('');
+    //obtenemos el correo de los props
+    const correo =props.email
     
-    
-
-  
-
-    
-  
-  
-    const correo =props.email//location.state.email;
-    const nombre =props.nombre //location.state.nombre;
-    const apellido =props.apellido //location.state.apellido;
-    const peso =props.peso //location.state.peso;
-    const estatura =props.estatura //location.state.estatura;
-    const edad =props.edad //location.state.edad;
-    const imagen_usuario =props.imagen_usuario //location.state.imagen_usuario;
+    //Funcion para cambiar de dia de rutina
+    function changeDay(day){
+        setDay(day);
+    }
   
 
     useEffect( () => {
@@ -107,17 +92,15 @@ export default function MisRutinas(props) {
                 whiteSpace: 'nowrap',   height: '100px', width:'100%', '& .MuiBottomNavigationAction-label': { fontFamily: 'Arial', fontSize: 20} }} elevation={3}
                 showLabels
                 value={Day}
-                onChange={(event, newDay) => {
-                setDay(newDay);
-                }}
+                onChange={(event, newDay) => changeDay(newDay)}
             >
-                {Day == 1 ? <BottomNavigationAction value={1}  sx={{background: 'lightblue', flex: 1 }} label="Lunes"/> : <BottomNavigationAction value={1} sx={{flex: 1 }} label="Lunes"/>}
-                {Day == 2 ? <BottomNavigationAction value={2} sx={{background: 'lightblue', flex: 1 }} label="Martes"  /> : <BottomNavigationAction value={2} sx={{ flex: 1 }} label="Martes"  />}
-                {Day == 3 ? <BottomNavigationAction value={3} sx={{background: 'lightblue', flex: 1 }} label="Miercoles"/> : <BottomNavigationAction value={3} sx={{ flex: 1 }} label="Miercoles"/>}
-                {Day == 4 ?  <BottomNavigationAction value={4} sx={{background: 'lightblue', flex: 1 }} label="Jueves"/> : <BottomNavigationAction value={4} sx={{ flex: 1 }} label="Jueves"/>}
-                {Day == 5 ?  <BottomNavigationAction value={5} sx={{background: 'lightblue', flex: 1 }} label="Viernes"/> : <BottomNavigationAction value={5} sx={{ flex: 1 }} label="Viernes"/>}
-                {Day == 6 ? <BottomNavigationAction value={6} sx={{background: 'lightblue', flex: 1 }} label="Sabado"/> : <BottomNavigationAction value={6} sx={{ flex: 1 }} label="Sabado"/>}
-                {Day == 0 ? <BottomNavigationAction value={0} sx={{background: 'lightblue', flex: 1 }} label="Domingo"/> : <BottomNavigationAction value={0} sx={{ flex: 1 }} label="Domingo"/>}
+                {Day === 1 ? <BottomNavigationAction value={1}  sx={{background: 'lightblue', flex: 1 }} label="Lunes"/> : <BottomNavigationAction value={1} sx={{flex: 1 }} label="Lunes"/>}
+                {Day === 2 ? <BottomNavigationAction value={2} sx={{background: 'lightblue', flex: 1 }} label="Martes"  /> : <BottomNavigationAction value={2} sx={{ flex: 1 }} label="Martes"  />}
+                {Day === 3 ? <BottomNavigationAction value={3} sx={{background: 'lightblue', flex: 1 }} label="Miercoles"/> : <BottomNavigationAction value={3} sx={{ flex: 1 }} label="Miercoles"/>}
+                {Day === 4 ?  <BottomNavigationAction value={4} sx={{background: 'lightblue', flex: 1 }} label="Jueves"/> : <BottomNavigationAction value={4} sx={{ flex: 1 }} label="Jueves"/>}
+                {Day === 5 ?  <BottomNavigationAction value={5} sx={{background: 'lightblue', flex: 1 }} label="Viernes"/> : <BottomNavigationAction value={5} sx={{ flex: 1 }} label="Viernes"/>}
+                {Day === 6 ? <BottomNavigationAction value={6} sx={{background: 'lightblue', flex: 1 }} label="Sabado"/> : <BottomNavigationAction value={6} sx={{ flex: 1 }} label="Sabado"/>}
+                {Day === 0 ? <BottomNavigationAction value={0} sx={{background: 'lightblue', flex: 1 }} label="Domingo"/> : <BottomNavigationAction value={0} sx={{ flex: 1 }} label="Domingo"/>}
                 
             </BottomNavigation>
             
