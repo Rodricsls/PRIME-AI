@@ -33,8 +33,8 @@ function Dias(dias){
 
 
 /*Creamos la petición para el modelo*/
-function createRequest(Tipo_ejercicio,edad,peso,altura,dedicacion,dias,tiempo, equipo){
-    request="Crea una rutina de "+Tipo_ejercicio+" para una persona hombre de "+edad+" años que pesa "+peso+" libras, mide "+altura+" cm y se dedica "+dedicacion+" a la actividad física. Esta persona puede entrenar los días"+dias+" con un tiempo máximo de "+tiempo+" por sesión, y "+equipo+" de equipo de entrenamiento."
+function createRequest(Tipo_ejercicio,edad,peso,altura,dedicacion,dias,tiempo, equipo,genero){
+    request="Crea una rutina de "+Tipo_ejercicio+" para una persona "+genero+" de "+edad+" años que pesa "+peso+" libras, mide "+altura+" cm y se dedica "+dedicacion+" a la actividad física. Esta persona puede entrenar los días"+dias+" con un tiempo máximo de "+tiempo+" por sesión, y "+equipo+" de equipo de entrenamiento."
     
     return request
 }
@@ -58,19 +58,14 @@ async function RoutineRequest(request){
         
           });
           //Si hay menos 7 incidencias o el match es null se vuelve a generar un rutina, sino se regresa arreglo con las incidencias
-          console.log(response.choices[0].text);
           let aux=response.choices[0].text.match(regex);
-          console.log(aux);
           let zero_duplicates=[];
           if(aux!=null){
             zero_duplicates=aux.filter((item, index) => aux.indexOf(item) === index);
           }
-          console.log(zero_duplicates);
           if(response.choices[0].text.match(regex)!=null && zero_duplicates.length > 7 ){
-            console.log(zero_duplicates);
             return zero_duplicates;
           }else{
-            console.log("Volvi a pedir :(");
             return await(RoutineRequest(request));
           }
 

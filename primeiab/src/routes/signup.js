@@ -1,100 +1,112 @@
+// Import required modules
 const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const bcrypt = require("bcrypt");
-const AI = require("./AI.js");
-const querys = require("./Querys");
+const Routine_AI = require("./Routine_AI.js");
+const insert = require("./sql/IQuerys.js");
+const verify = require("./sql/VQuerys.js");
+const Diet_AI = require("./Diet_AI.js");
+const select = require("./sql/SQuerys.js");
 const saltRounds = 10;
 
+// Export function that sets up endpoints for user registration
 module.exports = (app) => {
-    //endopoint /signup ingresa un nuevo usuario en la base de datos 
+    // Endpoint to register a new user in the database
     app.post('/signup', async (req, res) => {
         try{
-            const hashedContraseña = await bcrypt.hash(req.body.contraseña, 10);
+            // Hash user password using bcrypt
+            const hashedContraseña = await bcrypt.hash(req.body.contraseña, saltRounds);
+            // Get user data from request body
             const values = [
-            req.body.correo,
-            hashedContraseña,
-            req.body.nombre,
-            req.body.apellido,
-            req.body.peso,
-            req.body.estatura,
-            req.body.imagen_usuario,
-            req.body.edad,
+                req.body.correo,
+                hashedContraseña,
+                req.body.nombre,
+                req.body.apellido,
+                req.body.peso,
+                req.body.estatura,
+                req.body.imagen_usuario,
+                req.body.edad,
             ];
-            
-            await queryAsync(querys.User, values);
+            // Insert user data into database
+            await queryAsync(insert.User, values);
 
-            const days=AI.Dias(req.body.dias);
+            // Generate workout routine using AI model
+            const days=Routine_AI.Dias(req.body.dias);
+            const peticion= Routine_AI.createRequest(req.body.Tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
+            const routine= await Routine_AI.RoutineRequest(peticion);
+            let routine_array=Routine_AI.Parser(routine);
 
-            const peticion= AI.createRequest(req.body.Tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo);
-            const routine= await AI.RoutineRequest(peticion);
-
-            console.log("Rutina Generada: ", routine);
-
-            let routine_array=AI.Parser(routine);
-
+            // Insert workout routine data into database
             const tipo = req.body.Tipo_ejercicio+" "+req.body.correo;
-
-            await queryAsync(querys.Rutina, [tipo]);
-            const rutina_id=(await queryAsync(querys.rutinaIdS, [tipo])).rows[0].id_rutina;
-            await queryAsync (querys.rutina_asignar, [req.body.correo, rutina_id]);
-
+            await queryAsync(insert.Rutina, [tipo]);
+            const rutina_id=(await queryAsync(select.rutinaIdS, [tipo])).rows[0].id_rutina;
+            await queryAsync (insert.rutina_asignar, [req.body.correo, rutina_id]);
             for (i=0; i<routine_array.length; i++){
-
-
-                let Obj_routine=AI.simplifier(routine_array[i]);
-
-                const vef_ejercicio=await queryAsync(querys.ejercicio_exist, [Obj_routine.ejercicio]);
-                
-
+                let Obj_routine=Routine_AI.simplifier(routine_array[i]);
+                const vef_ejercicio=await queryAsync(verify.ejercicio_exist, [Obj_routine.ejercicio]);
                 if(vef_ejercicio.rows[0].count==0){
-                    await queryAsync(querys.Ejercicios, [Obj_routine.ejercicio, Obj_routine.musculo]);
+                    await queryAsync(insert.Ejercicios, [Obj_routine.ejercicio, Obj_routine.musculo]);
                 }
-
-                const ejercicio_id= (await queryAsync(querys.EjercicioidS, [Obj_routine.ejercicio])).rows[0].id_ejercicio;
-
-
-               
-
-                console.log("Datos a ingresar:",rutina_id, ejercicio_id, Obj_routine.dia, Obj_routine.ejercicio,Obj_routine.repeticiones, Obj_routine.series);
+                const ejercicio_id= (await queryAsync(select.EjercicioidS, [Obj_routine.ejercicio])).rows[0].id_ejercicio;
                 if(Obj_routine.tipo=='Repeticiones'){
-                    await queryAsync(querys.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia]);
                 }else{
-                    await queryAsync(querys.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia]);
                 }
-               
-                
-
-
-
             }
 
+            // Generate diet using AI model 
+            const diet=Diet_AI.createRequest(req.body.objetivo, req.body.edad, req.body.estatura, req.body.peso, req.body.alimentacion, req.body.restricciones);
+            const diet_response= await Diet_AI.DietRequest(diet);
+            let diet_array=Diet_AI.Parser(diet_response);
+            let diet_simplified=Diet_AI.simplifier(diet_array);
+            const objetivo_dieta=req.body.objetivo+"-"+req.body.correo;
+            await queryAsync(insert.dieta, [objetivo_dieta]);
+
+            const dieta_id=(await queryAsync(select.dietId, [objetivo_dieta])).rows[0].id_dieta;
+            await queryAsync(insert.dieta_asignar, [req.body.correo, dieta_id]);
+            for (i=0; i<diet_simplified.length; i++){
+                const dia=diet_simplified[i].dia;
+                const tiempo=diet_simplified[i].tiempo;
+                const comida=diet_simplified[i].comida;
+                const plato_existente=await queryAsync(verify.dish_exist, [dia, comida, tiempo]);
+                if(plato_existente.rows[0].count==0){
+                    await queryAsync(insert.plato, [dia, comida, tiempo]);
+                }
+                const plato_id=(await queryAsync(select.dishId, [dia, comida, tiempo])).rows[0].id_plato;
+                await queryAsync(insert.agregar_plato, [dieta_id, plato_id,dia]);
+            }
+
+            // Return success message if user was registered successfully
             res.json({ status: 1, mensaje: "USUARIO REGISTRADO!!!" });
+            
+//create a object with random data to test signup   
+
         }catch(error){
+            // Return error message if there was an error registering the user
             res.json({ status: 0, mensaje: "Error en el servidor" + error.message });
         }
-        
     });
 
-    //endopint /check-usario verifica si el usario a ingresar ya existe dentro de la base de datos
+    // Endpoint to check if a user already exists in the database
     app.post('/check-usuario', async (req, res) => {
         try{
-            
+            // Get user email from request body
             const values = [
                 req.body.correo
             ];
-
-            const result = await queryAsync(querys.check_usuario, values);
-
+            // Query the database to check if the user already exists
+            const result = await queryAsync(verify.check_usuario, values);
+            // Return true if the user already exists, false otherwise
             if(result.rows[0].count!=0){
                 res.json({existe:true});
             }else{
                 res.json({existe:false});
             }
         }catch(error){
+            // Return error message if there was an error checking if the user exists
             res.json({ status: 0, mensaje: "Error en el servidor" + error.message });
         }
-        
     });
-
 }
