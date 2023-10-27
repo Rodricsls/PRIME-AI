@@ -6,17 +6,10 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import './Form3.css';
-
-function ValueLabelComponent(props) {
-    const { children, value } = props;
-  
-    return (
-      <Tooltip enterTouchDelay={0} placement="top" title={value}>
-        {children}
-      </Tooltip>
-    );
-  }
 
 
 
@@ -60,13 +53,13 @@ function ValueLabelComponent(props) {
   });
 
   export default function Form3(props) {
-    const { edad, estatura, peso, handleEdadChange, handleEstaturaChange, handlePesoChange } = props;
+    const { edad, estatura, peso, handleEdadChange, handleEstaturaChange, handlePesoChange, genero, handleGeneroChange } = props;
     return (
 
       <div className='sliders'  style={{width:'70%', maxHeight: '500px', overflowY: 'auto' }}>
 
         <Typography>
-          Ingresa tu edad:
+          Ingresa tu edad:  
         </Typography>
         <Box
             component="form"
@@ -106,6 +99,20 @@ function ValueLabelComponent(props) {
               size='medium'
               aria-label="pretto slider" />
         </Box>
+        
+        <Typography>
+          Ingresa tu genero:
+        </Typography>
+        <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        name="row-radio-buttons-group"
+        value={genero}
+        onChange={handleGeneroChange}
+        >
+              <FormControlLabel value="Masculino" control={<Radio />} label="Masculino" />
+              <FormControlLabel value="Femenino" control={<Radio />} label="Femenimo" />
+        </RadioGroup>
         
       </div>
        
