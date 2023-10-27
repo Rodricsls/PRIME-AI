@@ -40,11 +40,7 @@ export default function Cuestionario() {
   const email = location.state.Email;
   const password = location.state.Password;
   const confirmpassword = location.state.ConfirmedPassword;
-  console.log('Primer Nombre: ' + name);
-  console.log('Apellido: ' + apellido);
-  console.log('Email: ' + email);
-  console.log('Password: ' + password);
-  console.log('Password Confirmada: ' + confirmpassword);
+ 
 
   const handleEdadChange = (event) => {
     setEdad(event.target.value);
