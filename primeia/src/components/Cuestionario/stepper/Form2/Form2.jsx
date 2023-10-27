@@ -52,12 +52,36 @@ export default function CheckboxLabels(props) {
         Selecciona cuanto tiempo puedes dedicarle a tus ejercicios al día:
       </Typography>
 
-      <RadioGroup  defaultValue="">
-        <FormControlLabel  value="a" aria-required control={<Radio/>} label="20 minutos" />
-        <FormControlLabel value="b" aria-required control={<Radio />} label="30 minutos" />
-        <FormControlLabel  value="c" aria-required control={<Radio/>} label="40 minutos" />
-        <FormControlLabel value="d" aria-required control={<Radio />} label="1 hora o más" />
+      <RadioGroup value={props.tiempo} onChange={props.handleTiempoChange}  >
+        <FormControlLabel  value="20 minutos" aria-required control={<Radio/>} label="20 minutos" />
+        <FormControlLabel value="30 minutos" aria-required control={<Radio />} label="30 minutos" />
+        <FormControlLabel  value="40 minutos" aria-required control={<Radio/>} label="40 minutos" />
+        <FormControlLabel value="1 hora o más" aria-required control={<Radio />} label="1 hora o más" />
       </RadioGroup>
+
+      <Typography>
+        Cual es tu objetivo para realizar ejercicio?
+      </Typography>
+
+      <RadioGroup value={props.objetivo} onChange={props.handleObjetivoChange}  >
+        <FormControlLabel  value="Pérdida de Peso" aria-required control={<Radio/>} label="Pérdida de Peso" />
+        <FormControlLabel value="Ganancia Muscular" aria-required control={<Radio />} label="Ganancia Muscular" />
+        <FormControlLabel  value="Mantenimiento de Peso saludable" aria-required control={<Radio/>} label="Mantenimiento de Peso saludable" />
+        <FormControlLabel value="Mejora de Salud CardioVascular" aria-required control={<Radio />} label="Mejora de Salud CardioVascular" />
+      </RadioGroup>
+
+      <Typography>
+        Que tipo de ejercicio te gustaria realizar?
+      </Typography>
+
+      <RadioGroup value={props.tipo_ejercicio} onChange={props.handleTipoRutinaChange} >
+        <FormControlLabel  value="flexibilidad" aria-required control={<Radio/>} label="flexibilidad" />
+        <FormControlLabel value="Resistencia Física" aria-required control={<Radio />} label="Resistencia Física" />
+        <FormControlLabel  value="Calistenia" aria-required control={<Radio/>} label="Calistenia" />
+        <FormControlLabel value="Fuerza" aria-required control={<Radio />} label="Fuerza" />
+      </RadioGroup>
+
+
     </div>
   );
 }

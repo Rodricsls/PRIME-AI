@@ -18,11 +18,17 @@ import { Password } from '@mui/icons-material';
 
 
 export default function Cuestionario() {
-
-
+  const [alimentacion, setAlimentacion] = React.useState('');
+  const [restricciones, setRestricciones] = React.useState('');
+  const [objetivo, setObjetivo] = React.useState('');
+  const [dedicacion, setDedicacion] = React.useState('');
+  const [equipo, setEquipo] = React.useState('');
+  const [tiempo, setTiempo] = React.useState('');
+  const [tipo_ejercicio, setTipoEjercicio] = React.useState('');
   const [edad, setEdad] = React.useState(20);
   const [estatura, setEstatura] = React.useState(100);
   const [peso, setPeso] = React.useState(70);
+  const [genero, setGenero] = React.useState('');
   const [dia, setDia]= React.useState({
     domingo: false,
     lunes: false,
@@ -66,16 +72,69 @@ export default function Cuestionario() {
     });
   };
 
+  const handleGeneroChange = (event) => {
+    setGenero(event.target.value);
+  };
+
+  const handleTipoRutinaChange = (event) => {
+    setTipoEjercicio(event.target.value);
+  };
+
+  const handleTiempoChange = (event) => {
+    setTiempo(event.target.value);
+  };
+
+  const handleDedicacionChange = (event) => {
+    setDedicacion(event.target.value);
+  };
+
+  const handleEquipoChange = (event) => {
+    setEquipo(event.target.value);
+  };
+
+  const handleObjetivoChange = (event) => {
+    setObjetivo(event.target.value);
+  };
+
+  const handleRestriccionesChange = (event) => {
+    setRestricciones(event.target.value);
+  };
+
+  const handleAlimentacionChange = (event) => {
+    setEquipo(event.target.value);
+  };
+
+  function finishForm() {
+    navigate('/');//Regresamos a la pagina  de login
+  }
+
   const stepsData = [
     {
       label: 'Paso 1',
       // Renderiza el formulario correspondiente para el Paso 1
-      form:<Form1/>,
+      form:<Form1
+            dedicacion = {dedicacion}
+            handleDedicacionChange = {handleDedicacionChange}
+            equipo = {equipo} 
+            handleEquipoChange = {handleEquipoChange}
+            alimentacion = {alimentacion}
+            handleAlimentacionChange = {handleAlimentacionChange}
+            restricciones = {restricciones}
+            handleRestriccionesChange = {handleRestriccionesChange} />,
     },
     {
       label: 'Paso 2',
       // Renderiza el formulario correspondiente para el Paso 2
-      form: <Form2 className="questions" dia={dia} handleDiaChange={handleDiaChange} />,
+      form: <Form2 className="questions" 
+              dia={dia} 
+              handleDiaChange={handleDiaChange}
+              tiempo = {tiempo}
+              handleTiempoChange = {handleTiempoChange}
+              objetivo = {objetivo}
+              handleObjetivoChange = {handleObjetivoChange}
+              tipo_ejercicio = {tipo_ejercicio}
+              handleTipoRutinaChange = {handleTipoRutinaChange}
+               />,
     },
     {
       label: 'Paso 3',
@@ -85,7 +144,9 @@ export default function Cuestionario() {
       peso={peso}
       handleEdadChange={handleEdadChange}
       handleEstaturaChange={handleEstaturaChange}
-      handlePesoChange={handlePesoChange} />,
+      handlePesoChange={handlePesoChange} 
+      genero = {genero} 
+      handleGeneroChange = {handleGeneroChange}/>,
     },
     // Agrega más pasos según sea necesario
   ];
@@ -130,19 +191,26 @@ export default function Cuestionario() {
                 >
                   Back
                 </Button>
+                
+                  {activeStep === stepsData.length - 1 ? (
+                  <Button
+                  variant="contained"
+                  sx={{color:'white', bgcolor:' #6dbf26'}}
+                  onClick={() => finishForm()}
+                >
+                <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+                  Finish
+                </Link>
+                </Button>
+              ) : (
                 <Button
                   variant="contained"
                   sx={{color:'white', bgcolor:' #6dbf26'}}
                   onClick={handleNext}
                 >
-                  {activeStep === stepsData.length - 1 ? (
-                <Link to="/Login" style={{ color: 'white', textDecoration: 'none' }}>
-                  Finish
-                </Link>
-              ) : (
                 'Next'
+                  </Button>
               )}
-              </Button>
               </div>
             </div>
           </div>

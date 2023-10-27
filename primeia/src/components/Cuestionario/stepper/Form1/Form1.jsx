@@ -9,7 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 
-export default function Form1() {
+export default function Form1(props) {
 
   
 
@@ -19,29 +19,29 @@ export default function Form1() {
         <Typography>
         ¿Que tanto le dedicas a tu actividad fisica durante la semana?
       </Typography>
-      <RadioGroup  defaultValue="">
-        <FormControlLabel  value="a" aria-required control={<Radio/>} label="poca" />
-        <FormControlLabel value="b" aria-required control={<Radio />} label="la suficiente" />
-        <FormControlLabel  value="c" aria-required control={<Radio/>} label="considerable" />
-        <FormControlLabel value="d" aria-required control={<Radio />} label="demasiada" />
+      <RadioGroup value={props.dedicacion} onChange={props.handleDedicacionChange}  >
+        <FormControlLabel  value="Poca" aria-required control={<Radio/>} label="Poca" />
+        <FormControlLabel value="La Suficiente" aria-required control={<Radio />} label="La suficiente" />
+        <FormControlLabel  value="Considerable" aria-required control={<Radio/>} label="Considerable" />
+        <FormControlLabel value="Demasiado" aria-required control={<Radio />} label="Demasiado" />
       </RadioGroup>
       <Typography>
         ¿Posees equipo para realizar ejercicios?
       </Typography>
 
-      <RadioGroup  defaultValue="">
-        <FormControlLabel  value="a" aria-required control={<Radio/>} label="Sí" />
-        <FormControlLabel value="b" aria-required control={<Radio />} label="No" />
-        <FormControlLabel value="c" aria-required control={<Radio />} label="Puedo Conseguir" />
+      <RadioGroup value={props.equipo} onChange={props.handleEquipoChange} >
+        <FormControlLabel  value="dispone" aria-required control={<Radio/>} label="Sí" />
+        <FormControlLabel value="no dispone" aria-required control={<Radio />} label="No" />
       </RadioGroup>
       <Typography>
         ¿Que tan estricto eres con tu dieta?
       </Typography>
 
-      <RadioGroup  defaultValue="">
-        <FormControlLabel  value="a" aria-required control={<Radio/>} label="Poco" />
-        <FormControlLabel value="b" aria-required control={<Radio />} label="Lo suficente" />
-        <FormControlLabel value="c" aria-required control={<Radio />} label="Mucho" />
+      <RadioGroup  value={props.alimentacion} onChange={props.handleAlimentacionChange} >
+        <FormControlLabel  value="Muy poco" aria-required control={<Radio/>} label="Muy poco" />
+        <FormControlLabel  value="Poco" aria-required control={<Radio/>} label="Poco" />
+        <FormControlLabel value="Considerablemente" aria-required control={<Radio />} label="Considerablemente" />
+        <FormControlLabel value="Demasiado" aria-required control={<Radio />} label="Demasiado" />
       </RadioGroup>
 
         <Typography>
@@ -56,7 +56,7 @@ export default function Form1() {
         noValidate
         autoComplete="off"
         >
-            <TextField  min='20' id="outlined-basic" label="Si no hay nada, ingresa 'NADA'" variant="outlined" />
+            <TextField value={props.restricciones} onChange={props.handleRestriccionesChange}  min='20' id="outlined-basic" label="Si no hay nada, ingresa 'NADA'" variant="outlined" />
         </Box>
 
    
