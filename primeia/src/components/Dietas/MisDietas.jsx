@@ -1,60 +1,159 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Paper from '@mui/material/Paper';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import HomeIcon from '@mui/icons-material/Home';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import RowingIcon from '@mui/icons-material/Rowing';
-import ScaleIcon from '@mui/icons-material/Scale';
-import FeedIcon from '@mui/icons-material/Feed';
-import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import FaceIcon from '@mui/icons-material/Face';
-import AssistWalkerIcon from '@mui/icons-material/AssistWalker';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import axios from 'axios';
+import { styled } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
 import { useState } from "react";
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import Alert from '@mui/material/Alert';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+  ))(({ theme }) => ({
+    border: `1px solid ${theme.palette.divider}`,
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+  }));
+  
+  const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor:
+      theme.palette.mode === 'dark'
+        ? 'rgba(255, 255, 255, .05)'
+        : 'rgba(255, 255, 255, .05)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(1),
+    },
+  }));
+  
+  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    borderTop: '1px solid rgba(0, 0, 0, .125)',
+  }));
+
+
 
 
 export default function MisDietas(props) {
 
     const correo = props.email;
+    const [expanded, setExpanded] = React.useState('panel1');
 
+    const handleChange = (panel) => (event, newExpanded) => {
+      setExpanded(newExpanded ? panel : false);};
+
+      
+      
 
     return (
-        <Box component="main" sx={{ flexGrow: 1, p: 3, background: '', width:'100%', height:'1300px'}}>
-            <h1>Dietas</h1>
-        </Box>
+        <div>
+      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography>Lunes</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+          <Typography>Martes</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+          <Typography>Miercoles</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography>Jueves</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography>Viernes</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography>Sabado</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography>Domingo</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
+            sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </div>
     );
 }
 
