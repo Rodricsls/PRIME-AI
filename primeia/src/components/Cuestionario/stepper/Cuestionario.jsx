@@ -15,9 +15,18 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import './Cuestionario.css';
 import { Password } from '@mui/icons-material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import axios from 'axios';
+
 
 
 export default function Cuestionario() {
+
+  const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
+  const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
+  const [MensajeError, setMensajeError] = React.useState('');
+
   const [alimentacion, setAlimentacion] = React.useState('');
   const [restricciones, setRestricciones] = React.useState('');
   const [objetivo, setObjetivo] = React.useState('');
@@ -97,7 +106,16 @@ export default function Cuestionario() {
   };
 
   const handleAlimentacionChange = (event) => {
-    setEquipo(event.target.value);
+    setAlimentacion(event.target.value);
+  };
+
+  const SnackbarSuccessClose = () => {
+    setSnackbarSuccessOpen(false);
+  };
+
+  
+const SnackbarFailClose = () => {
+    setSnackbarFailOpen(false);
   };
 
   function finishForm() {
@@ -161,6 +179,64 @@ export default function Cuestionario() {
 
   const currentStep = stepsData[activeStep];
 
+  //console.log a todos los datos obtenidos
+  console.log("Nombre: ", name);
+  console.log("Apellido: ", apellido);
+  console.log("Email: ", email);
+  console.log("Password: ", password);
+  console.log("Confirm Password: ", confirmpassword);
+  console.log("Dedicacion: ", dedicacion);
+  console.log("Equipo: ", equipo);
+  console.log("Alimentacion: ", alimentacion);
+  console.log("Restricciones: ", restricciones);
+  console.log("Objetivo: ", objetivo);
+  console.log("Tiempo: ", tiempo);
+  console.log("Tipo de ejercicio: ", tipo_ejercicio);
+  console.log("Edad: ", edad);
+  console.log("Estatura: ", estatura);
+  console.log("Peso: ", peso);
+  console.log("Genero: ", genero);
+  console.log("Dias: ", dia);
+
+  //Register a user using axios 
+
+
+
+  async function RegistrarUsuario(){
+    let restriccionAlimenticia = '';
+      if(restricciones.toLowerCase() === 'nada'){
+        restriccionAlimenticia = 'no tiene restricciones alimenticias'
+      }else{
+        restriccionAlimenticia = restricciones;
+      }
+
+      try{  
+        const response = await axios.post('http://localhost:8888/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
+                                                                          peso:peso, estatura:estatura,imagen_usuario:"#", edad:edad,tipo_ejercicio:tipo_ejercicio ,
+                                                                          dias:dia,tiempo:tiempo, dedicacion:dedicacion, 
+                                                                          equipo:equipo, objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero});
+        const data= response.data;
+        if(data.status === 1){
+          setSnackbarSuccessOpen(true);
+          navigate("/"); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
+          console.log("Usuario registrado correctamente");
+
+        }else{
+          console.log(data);
+          setMensajeError('Ha ocurrido un error');
+          setSnackbarFailOpen(true);
+          
+        }
+      }catch(error){
+        console.log(error);
+        setMensajeError('Ha ocurrido un error')
+        setSnackbarFailOpen(true);
+      }
+
+  }
+
+
+
   return (
     <Grid className='main' container component="main" sx={{ minHeight: '100vh', width:'100%', height:'100vh', minWidth:'100vh' }}>
 
@@ -192,11 +268,11 @@ export default function Cuestionario() {
                   <Button
                   variant="contained"
                   sx={{color:'white', bgcolor:' #6dbf26'}}
-                  onClick={() => finishForm()}
+                  onClick={() => RegistrarUsuario()}
                 >
-                <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+                
                   Finish
-                </Link>
+                
                 </Button>
               ) : (
                 <Button
@@ -212,6 +288,18 @@ export default function Cuestionario() {
           </div>
         </Box>
       </Stack>
+        <Snackbar open={SnackbarSuccessOpen} autoHideDuration={6000} onClose={SnackbarSuccessClose}>
+      <MuiAlert elevation={6} variant="filled" onClose={SnackbarSuccessClose} severity="success" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+        Usuario registrado exitosamente!
+      </MuiAlert>
+    </Snackbar>
+
+    <Snackbar open={SnackbarFailOpen} autoHideDuration={6000} onClose={SnackbarFailClose}>
+      <MuiAlert elevation={6} variant="filled" onClose={SnackbarFailClose} severity="error" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+        {MensajeError}
+      </MuiAlert>
+    </Snackbar>
     </Grid>
+    
   );
 }
