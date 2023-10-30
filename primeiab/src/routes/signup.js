@@ -33,12 +33,12 @@ module.exports = (app) => {
 
             // Generate workout routine using AI model
             const days=Routine_AI.Dias(req.body.dias);
-            const peticion= Routine_AI.createRequest(req.body.Tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
+            const peticion= Routine_AI.createRequest(req.body.tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
             const routine= await Routine_AI.RoutineRequest(peticion);
             let routine_array=Routine_AI.Parser(routine);
 
             // Insert workout routine data into database
-            const tipo = req.body.Tipo_ejercicio+" "+req.body.correo;
+            const tipo = req.body.tipo_ejercicio+" "+req.body.correo;
             await queryAsync(insert.Rutina, [tipo]);
             const rutina_id=(await queryAsync(select.rutinaIdS, [tipo])).rows[0].id_rutina;
             await queryAsync (insert.rutina_asignar, [req.body.correo, rutina_id]);
@@ -67,7 +67,7 @@ module.exports = (app) => {
             const dieta_id=(await queryAsync(select.dietId, [objetivo_dieta])).rows[0].id_dieta;
             await queryAsync(insert.dieta_asignar, [req.body.correo, dieta_id]);
             for (i=0; i<diet_simplified.length; i++){
-                const dia=diet_simplified[i].dia;
+                const dia=diet_simplified[i].dia.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const tiempo=diet_simplified[i].tiempo;
                 const comida=diet_simplified[i].comida;
                 const plato_existente=await queryAsync(verify.dish_exist, [dia, comida, tiempo]);

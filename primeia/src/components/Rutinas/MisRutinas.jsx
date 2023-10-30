@@ -1,49 +1,29 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
+import BottomNavigation from '@mui/material/BottomNavigation';
 import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import HomeIcon from '@mui/icons-material/Home';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import RowingIcon from '@mui/icons-material/Rowing';
-import ScaleIcon from '@mui/icons-material/Scale';
-import FeedIcon from '@mui/icons-material/Feed';
-import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import FaceIcon from '@mui/icons-material/Face';
-import AssistWalkerIcon from '@mui/icons-material/AssistWalker';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useState } from "react";
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Grid, IconButton } from '@mui/material';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import './MisRutinas.css'
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+
+
 
 export default function MisRutinas(props) {
     //Constantes a utilizar en el componente
@@ -51,7 +31,13 @@ export default function MisRutinas(props) {
     const location = useLocation();
     const navigate = useNavigate();
     const [Day, setDay] = React.useState(Hoy.getDay());//Obtenemos que dia es hoy
-    console.log(Day);
+
+    const [selectedTab, setSelectedTab] = useState(0);
+    const [routineObject, setRoutineObject] = useState([]); //Objeto que contiene la rutina
+
+    const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+    };
     
     // Informacion de rutina para cada dia
     const [rutinaLunes, setRutinaLunes] = useState([]);
@@ -62,51 +48,155 @@ export default function MisRutinas(props) {
     const [rutinaSabado, setRutinaSabado] = useState([]);
     const [rutinaDomingo, setRutinaDomingo] = useState([]);
     const [NombreRutina, setNombreRutina] = useState('');
+    const[dayRoutine, setDayRoutine] = useState([]); //Dia de la rutina
     //obtenemos el correo de los props
     const correo =props.email
     
     //Funcion para cambiar de dia de rutina
     function changeDay(day){
+        
+        setDayRoutine(objetoAArray(routineObject[day]).splice(1));
         setDay(day);
+        
+        
     }
-  
 
-    useEffect( () => {
-      
-    } , [])
-
-  
-
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post('http://localhost:8888/routineObject', { correo: correo });
+                setRoutineObject(convertirObjetoAArray(response.data.rutina));
+              
+                const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
+                setDayRoutine(updatedDayRoutine);
+            } catch (error) {
+                console.error(error);
+            }
+        };
     
-  
-  
+        fetchData();
+    }, []);
+    console.log(routineObject)
+    console.log(dayRoutine);
+
+    function convertirObjetoAArray(objeto) {
+        const arrayResultante = [];
+      
+        for (const diaSemana in objeto) {
+          if (objeto.hasOwnProperty(diaSemana)) {
+            const ejercicios = objeto[diaSemana];
+            const dia = {
+              dia: diaSemana,
+              ejercicios: []
+            };
+      
+            for (const ejercicio of ejercicios) {
+              dia.ejercicios.push(ejercicio);
+            }
+      
+            arrayResultante.push(dia);
+          }
+        }
+      
+        return arrayResultante;
+      }
+
+      function objetoAArray(objeto) {
+        const arrayResultado = [];
+      
+        // Itera sobre las claves del objeto
+        for (const clave in objeto) {
+          if (Array.isArray(objeto[clave])) {
+            // Si el valor es un arreglo, itera sobre los elementos del arreglo y agrégalo al resultado
+            objeto[clave].forEach((elemento) => {
+              arrayResultado.push(elemento);
+            });
+          } else {
+            // Si no es un arreglo, agrega la clave y el valor como un objeto al resultado
+            const objetoTemporal = {};
+            objetoTemporal[clave] = objeto[clave];
+            arrayResultado.push(objetoTemporal);
+          }
+        }
+
+        return arrayResultado;
+      }
+
+    const ref = React.useRef(null);
+
+
     return (
         
-    
-      <Box component="main" sx={{ flexGrow: 1, p: 3, background: '', width:'100%', height:'1300px'}}>
-           
-            
-           
-           <BottomNavigation
-                sx={{ position: 'fixed', bottom: 0, left: 100, right: 0,overflowX: 'auto', 
-                whiteSpace: 'nowrap',   height: '100px', width:'100%', '& .MuiBottomNavigationAction-label': { fontFamily: 'Arial', fontSize: 20} }} elevation={3}
-                showLabels
-                value={Day}
-                onChange={(event, newDay) => changeDay(newDay)}
-            >
-                {Day === 1 ? <BottomNavigationAction value={1}  sx={{background: 'lightblue', flex: 1 }} label="Lunes"/> : <BottomNavigationAction value={1} sx={{flex: 1 }} label="Lunes"/>}
-                {Day === 2 ? <BottomNavigationAction value={2} sx={{background: 'lightblue', flex: 1 }} label="Martes"  /> : <BottomNavigationAction value={2} sx={{ flex: 1 }} label="Martes"  />}
-                {Day === 3 ? <BottomNavigationAction value={3} sx={{background: 'lightblue', flex: 1 }} label="Miercoles"/> : <BottomNavigationAction value={3} sx={{ flex: 1 }} label="Miercoles"/>}
-                {Day === 4 ?  <BottomNavigationAction value={4} sx={{background: 'lightblue', flex: 1 }} label="Jueves"/> : <BottomNavigationAction value={4} sx={{ flex: 1 }} label="Jueves"/>}
-                {Day === 5 ?  <BottomNavigationAction value={5} sx={{background: 'lightblue', flex: 1 }} label="Viernes"/> : <BottomNavigationAction value={5} sx={{ flex: 1 }} label="Viernes"/>}
-                {Day === 6 ? <BottomNavigationAction value={6} sx={{background: 'lightblue', flex: 1 }} label="Sabado"/> : <BottomNavigationAction value={6} sx={{ flex: 1 }} label="Sabado"/>}
-                {Day === 0 ? <BottomNavigationAction value={0} sx={{background: 'lightblue', flex: 1 }} label="Domingo"/> : <BottomNavigationAction value={0} sx={{ flex: 1 }} label="Domingo"/>}
+        <Box style={{ overflowX: 'auto' }}>
+            <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
                 
-            </BottomNavigation>
-            
-        
-      </Box>
+                <Grid container spacing={5}>
+                <Grid item xs={4} md={4} lg={4} sx={{display:'flex', flexDirection:'column'}}>
+                    <Paper sx={{ display: 'flex', flexDirection: 'column', height: 50, alignItems:'center', backgroundColor:'#8ad449'}}>
+                    <IconButton edge="start" color="inherit" sx={{width:'100%', height:'100%'}}>
+                        <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
+                            CREAR UNA NUEVA RUTINA
+                        </Typography>
+                        <FitnessCenterIcon sx={{ fontSize: 40 }} />
+                    </IconButton>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={18} lg={19}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 280, alignItems:'center' }}>
+                      <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 1 }}>  
+                        RUTINAS DEL DÍA
+                      </Typography>
+                      {dayRoutine.length === 0 ? (
+              <Typography color="black"variant="body1">No hay rutinas</Typography>
+            ) : (
+              dayRoutine.map((ejercicio, index) => (
+                <Accordion key={index} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <ListItem>
+                      <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 1 }}>
+                        {ejercicio.idr}
+                      </Typography>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FitnessCenterIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText />
+                    </ListItem>
+                  </AccordionSummary>
+                  <List>
+                    <ListItem>
+                      <ListItemText primary={ejercicio.descripcion} />
+                    </ListItem>
+                  </List>
+                </Accordion>
+              ))
+            )}
 
+                    </Paper>
+                  </Grid>
+                </Grid>
+            </Container>
+            <BottomNavigation
+                    showLabels
+                    variant="scrollable"
+
+                    display="flex"
+
+                    sx={{position:'fixed', bottom:0, height:'90px', width: '100%', zIndex: 1000, background: 'white',pr:10}}
+                    value={Day}
+                    onChange={(event, newDay) => changeDay(newDay)}
+
+                >
+                    {Day === 1 ? <BottomNavigationAction className='select' value={1}  sx={{background: '#3996D4', flex: 1 ,fontSize:'16px', color:'red'}} label="LUNES"/> : <BottomNavigationAction value={1} sx={{flex: 1,minWidth: 'auto' }} label="LUNES"/>}
+                    {Day === 2 ? <BottomNavigationAction className='select' value={2} sx={{background: '#3996D4', flex: 1 ,minWidth: 'auto'}} label="MARTES"  /> : <BottomNavigationAction value={2} sx={{ flex: 1, minWidth: 'auto' }} label="MARTES"  />}
+                    {Day === 3 ? <BottomNavigationAction className='select' value={3} sx={{background: '#3996D4', flex: 1 ,minWidth: 'auto'}} label="MIERCOLES"/> : <BottomNavigationAction value={3} sx={{ flex: 1, minWidth: 'auto' }} label="MIERCOLES"/>}
+                    {Day === 4 ?  <BottomNavigationAction className='select' value={4} sx={{background: '#3996D4', flex: 1,minWidth: 'auto' }} label="JUEVES"/> : <BottomNavigationAction value={4} sx={{ flex: 1, minWidth: 'auto' }} label="JUEVES"/>}
+                    {Day === 5 ?  <BottomNavigationAction className='select' value={5} sx={{background: '#3996D4', flex: 1,minWidth: 'auto' }} label="VIERNES"/> : <BottomNavigationAction value={5} sx={{ flex: 1, minWidth: 'auto' }} label="VIERNES"/>}
+                    {Day === 6 ? <BottomNavigationAction className='select' value={6} sx={{background: '#3996D4', flex: 1 ,minWidth: 'auto'}} label="SABADO"/> : <BottomNavigationAction value={6} sx={{ flex: 1, minWidth: 'auto' }} label="SABADO"/>}
+                    {Day === 0 ? <BottomNavigationAction className='select' value={0} sx={{background: '#3996D4', flex: 1 ,minWidth: 'auto'}} label="DOMINGO"/> : <BottomNavigationAction value={0} sx={{ flex: 1, minWidth: 'auto' }} label="DOMINGO"/>} 
+                </BottomNavigation>
+            </Box>
     );
     
     

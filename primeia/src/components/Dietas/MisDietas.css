@@ -1,0 +1,15 @@
+.css-heg063-MuiTabs-flexContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.css-1e6jbaj-MuiGrid-root {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Add this CSS rule to limit the width of the cards */
+.css-1jzv9v6-MuiCard-root {
+    width: 60%;
+    margin: 0 auto;
+}

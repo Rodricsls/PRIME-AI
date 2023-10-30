@@ -1,0 +1,17 @@
+.css-13jmf02-MuiButtonBase-root-MuiBottomNavigationAction-root .Mui-selected {
+    color: #ffffff;
+    font-size: 15px;
+}
+.css-17hm4i7-MuiButtonBase-root-MuiBottomNavigationAction-root .Mui-selected {
+    color: white;
+}
+
+.css-imwso6-MuiBottomNavigationAction-label {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 0.75rem;
+    opacity: 1;
+    color: black;
+    -webkit-transition: font-size 0.2s,opacity 0.2s;
+    transition: font-size 0.2s,opacity 0.2s;
+    transition-delay: 0.1s;
+}
