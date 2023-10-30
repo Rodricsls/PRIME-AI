@@ -3,17 +3,18 @@ const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const select = require("./sql/SQuerys.js");
-const routineObject = {correo:"", Lunes:[],Martes:[],Miercoles:[],Jueves:[],Viernes:[],Sabado:[],Domingo:[]};
+
 module.exports = (app) => {
     //endpoint construct routineObject
     app.post('/routineObject', async (req, res) => {
+        const routineObject = {Domingo:[],Lunes:[],Martes:[],Miercoles:[],Jueves:[],Viernes:[],Sabado:[]};
         const correo=req.body.correo;
         console.log(correo);
-        routineObject.correo=correo;
         try{
             const routines = await queryAsync(select.rutinaId, [correo]);
+
             const ids=routines.rows;
-            console.log(1);
+            console.log(ids);
             for (i=0; i<ids.length; i++){
                 const dias= await queryAsync(select.diasRutina, [ids[i].id_rutina]);
                 console.log(2);
@@ -21,13 +22,16 @@ module.exports = (app) => {
                     const exerciseday= (await queryAsync(select.rutinaPersonalizada,[ids[i].id_rutina, dias.rows[a].dia])).rows;
                     let routineData={idr:ids[i].id_rutina, ejercicios:exerciseday};
                     switch(dias.rows[a].dia){
+                        case "Domingo":
+                            routineObject.Domingo.push(routineData);
+                            break;
                         case "Lunes":
                             routineObject.Lunes.push(routineData);
                             break;
                         case "Martes":
                             routineObject.Martes.push(routineData);
                             break;
-                        case "Miercoles":
+                        case "Miércoles":
                             routineObject.Miercoles.push(routineData);
                             break;
                         case "Jueves":
@@ -36,11 +40,8 @@ module.exports = (app) => {
                         case "Viernes":
                             routineObject.Viernes.push(routineData);
                             break;
-                        case "Sabado":
+                        case "Sábado":
                             routineObject.Sabado.push(routineData);
-                            break;
-                        case "Domingo":
-                            routineObject.Domingo.push(routineData);
                             break;
                     }
                 }

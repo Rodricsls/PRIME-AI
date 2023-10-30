@@ -1,7 +1,8 @@
 import React from 'react';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
@@ -12,15 +13,16 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
+import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import HomeIcon from '@mui/icons-material/Home';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import HomeIcon from '@mui/icons-material/Home';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import MenuIcon from '@mui/icons-material/Menu';
 import RowingIcon from '@mui/icons-material/Rowing';
-import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useState } from "react";
 import { useEffect } from 'react';
@@ -28,13 +30,69 @@ import { useNavigate } from "react-router-dom";
 import MiPerfil from '../MiPerfil/MiPerfil';
 import MisRutinas from '../Rutinas/MisRutinas';  
 import MisDietas from '../Dietas/MisDietas';
+import axios from 'axios';
+import { Grid, Paper } from '@mui/material';
+import SportsHandballIcon from '@mui/icons-material/SportsHandball';
+import './Home.css'
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 
 const drawerWidth = 240; //ancho del drawer
 const settings = ['Mi Perfil', 'Cerrar Sesion']; //opciones del menu de usuario
 const paginas = ['Home' , 'Mis Rutinas' , 'Mi Dieta'] //opciones del drawer
 
+//Estilos del AppBar
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+//Estilos del Drawer
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })((
+  { theme, open }) => ({
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    boxSizing: 'border-box',
+    ...(!open && {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9),
+      },
+    }),
+  },
+
+}));
+
+
+const defaultTheme = createTheme();
+
 export default function Home() {
   //Constantes a utilizar en el componente
+  const [open, setOpen] = React.useState(false);
   const [HomePage, setHomePage] = useState(true);
   const [MyProfilePage, setMyProfilePage] = useState(false);
   const [RutinasPage, setRutinasPage] = useState(false);
@@ -49,6 +107,7 @@ export default function Home() {
   const [edad, setEdad] = useState(0);
   const [imagen_usuario, setImagenUsuario] = useState('');
   const correo =location.state.email;
+  
  
 
   //Funcion para obtener la informacion del usuario
@@ -88,6 +147,15 @@ export default function Home() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    //Funcion para abrir el drawer
+    const toggleDrawer = () => {
+      setOpen(!open);
+    };
+    const [selectedTab, setSelectedTab] = useState(0);
+
+const handleTabChange = (event, newValue) => {
+  setSelectedTab(newValue);
+};
 
     //Funcion para manejar las opciones del menu de usuario
     function handleProfileOptions(option) {
@@ -125,46 +193,23 @@ export default function Home() {
     }
 
     
-
-
-
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />      
+          <AppBar className='var' position="absolute" open={open}>
+              <Toolbar sx={{pr:'24px',}}>
+                <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer} sx={{marginRight:'36px', ...(open && {display:'none'})}}>
+                    <MenuIcon />
+                </IconButton> 
+                <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>  
+                   Hola, {nombre} {apellido}!
+                </Typography> 
 
-      
-      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1 , background: 'linear-gradient(to right bottom, #3996D4, #21457F)' }}>
-        <Container maxWidth="xl" >
-            <Toolbar disableGutters>
-            <AdbIcon sx={{ position: 'fixed', top:'2%', left:'2%'}} />
-            <Typography
-                variant="h5"
-                noWrap
-                component="a"
-                href="/"
-                sx={{
-                mr: 2,
-                position: 'fixed', top:'1.5%', left:'3.5%',
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                }}
-            >
-                PRIME AI
-            </Typography>
-
-            
-
-            
-
-            <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ position: 'fixed', top:'0%', right:'2%' }}>
-                    <Avatar alt={nombre} src="/static/images/avatar/2.jpg" />
-                </IconButton>
+                  <IconButton onClick={handleOpenUserMenu}>
+                      <Avatar sx={{backgroundColor:'#6dbf26'}} alt={nombre} src="/static/images/avatar/2.jpg" />
+                  </IconButton>
                 </Tooltip>
                 <Menu
                 sx={{ mt: '45px' }}
@@ -188,49 +233,70 @@ export default function Home() {
                     </MenuItem>
                 ))}
                 </Menu>
-            </Box>
+              </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={open}>
+            <Toolbar sx={{display:'flex', alignItems:'center', justifyContent:'flex-end', px:[0]}}>
+                <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 0 }}>  
+                    PRIME AI 
+                </Typography>
+                <SportsHandballIcon sx={{color:'#3996D4', flexGrow: 0}}/>
+              <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton>
             </Toolbar>
-        </Container>
-      </AppBar>
 
-
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto', height : '100%' , background : '#EAF1F8'}}>
-          <List>
-            {paginas.map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton onClick={() => NavigationSelect(text)}>
-                  <ListItemIcon>
-                    {index === 0 ? <HomeIcon /> : '' }
-                    {index === 1 ? <RowingIcon /> : ''}
-                    {index === 2 ? <RestaurantMenuIcon /> : ''}
+            <List component="nav">
+              {paginas.map((key, index) => (
+                <ListItemButton key={index} onClick={() => NavigationSelect(key)} sx={{ height: '90px' }}>
+                  <ListItemIcon sx={{ textAlign: 'center' }}>
+                    {index === 0 ? <HomeIcon sx={{ color: '#3996D4', textAlign: 'center' }} /> : ''}
+                    {index === 1 ? <RowingIcon sx={{ color: '#3996D4' }} /> : ''}
+                    {index === 2 ? <RestaurantMenuIcon sx={{ color: '#3996D4' }} /> : ''}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={key} />
                 </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-              
-        
-           
-             
-              {MyProfilePage ? <MiPerfil email={correo} nombre = {nombre} apellido = {apellido} peso = {peso} estatura ={estatura} edad = {edad} imagen_usuario = {imagen_usuario} />: ''}
-              {RutinasPage ? <MisRutinas email={correo} /> : ''}
-              {DietasPage ? <MisDietas email={correo} /> : ''}
+              ))}
+            </List>
+          </Drawer>
+          <Box component="main" sx={{ backgroundColor: (theme) => theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900], flexGrow: 1, height: '100vh', overflow: 'auto' }}>
+            <Toolbar/>
+            <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
+                {HomePage ? <Grid container spacing={5}>
+                  {/* Rachas */}
+                  <Grid item xs={14} md={8} lg={9}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 280,alignItems:'center' }}>
+                      <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 1 }}>  
+                        RACHA 
+                      </Typography> 
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} md={4} lg={3}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 280,alignItems:'center' }}>
+                      <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 1 }}>  
+                        PROGRESO DIARIO 
+                      </Typography> 
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 280, alignItems:'center' }}>
+                      <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 1 }}>  
+                        PROGRESO SEMANAL 
+                      </Typography> 
+                    </Paper>
+                  </Grid>
+                </Grid>:''}
+
+            </Container>
+            {RutinasPage ? <MisRutinas email={correo} /> : ''}
+            {DietasPage ? <MisDietas email={correo} /> : ''}
+          </Box>
             
             
-        
-      
-    </Box>
+            {/* {MyProfilePage ? <MiPerfil email={correo} nombre = {nombre} apellido = {apellido} peso = {peso} estatura ={estatura} edad = {edad} imagen_usuario = {imagen_usuario} />: ''}
+            {RutinasPage ? <MisRutinas email={correo} /> : ''}
+            {DietasPage ? <MisDietas email={correo} /> : ''} */}
+      </Box>
+    </ThemeProvider>
   );
 }

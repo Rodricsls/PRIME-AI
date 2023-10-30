@@ -4,3 +4,4 @@ const test="Lunes--Desayuno--Tostadas de aguacate con huevo escalfado y miel;Lun
 //test if the regex works 
   
 console.log(test.match(regex));
+//crun job

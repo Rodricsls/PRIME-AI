@@ -179,28 +179,8 @@ const SnackbarFailClose = () => {
 
   const currentStep = stepsData[activeStep];
 
-  //console.log a todos los datos obtenidos
-  console.log("Nombre: ", name);
-  console.log("Apellido: ", apellido);
-  console.log("Email: ", email);
-  console.log("Password: ", password);
-  console.log("Confirm Password: ", confirmpassword);
-  console.log("Dedicacion: ", dedicacion);
-  console.log("Equipo: ", equipo);
-  console.log("Alimentacion: ", alimentacion);
-  console.log("Restricciones: ", restricciones);
-  console.log("Objetivo: ", objetivo);
-  console.log("Tiempo: ", tiempo);
-  console.log("Tipo de ejercicio: ", tipo_ejercicio);
-  console.log("Edad: ", edad);
-  console.log("Estatura: ", estatura);
-  console.log("Peso: ", peso);
-  console.log("Genero: ", genero);
-  console.log("Dias: ", dia);
 
   //Register a user using axios 
-
-
 
   async function RegistrarUsuario(){
     let restriccionAlimenticia = '';
