@@ -18,10 +18,12 @@ import { Password } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import axios from 'axios';
+import LoadingScreen from '../../LoadingScreen/LoadingScreen';
 
 
 
 export default function Cuestionario() {
+  const [Loading, setLoading] = React.useState(false);
 
   const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
   const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
@@ -209,12 +211,13 @@ const SnackbarFailClose = () => {
       }else{
         restriccionAlimenticia = restricciones;
       }
-
+      setLoading(true);
       try{  
         const response = await axios.post('http://localhost:8888/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
                                                                           peso:peso, estatura:estatura,imagen_usuario:"#", edad:edad,tipo_ejercicio:tipo_ejercicio ,
                                                                           dias:dia,tiempo:tiempo, dedicacion:dedicacion, 
                                                                           equipo:equipo, objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero});
+        setLoading(false);
         const data= response.data;
         if(data.status === 1){
           setSnackbarSuccessOpen(true);
@@ -238,7 +241,15 @@ const SnackbarFailClose = () => {
 
 
   return (
+
+    
+
     <Grid className='main' container component="main" sx={{ minHeight: '100vh', width:'100%', height:'100vh', minWidth:'100vh' }}>
+
+
+      {Loading ? <LoadingScreen/> 
+      
+      : 
 
       <Stack className='stack'sx={{ width: '100%' }} >
         <Box className='box' sx={{ width: '100%' }}>
@@ -286,8 +297,11 @@ const SnackbarFailClose = () => {
               </div>
             </div>
           </div>
+            
         </Box>
-      </Stack>
+      
+      </Stack> 
+      }
         <Snackbar open={SnackbarSuccessOpen} autoHideDuration={6000} onClose={SnackbarSuccessClose}>
       <MuiAlert elevation={6} variant="filled" onClose={SnackbarSuccessClose} severity="success" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
         Usuario registrado exitosamente!

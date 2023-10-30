@@ -3,10 +3,10 @@ const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const select = require("./sql/SQuerys.js");
-const routineObject = {correo:"", Lunes:[],Martes:[],Miercoles:[],Jueves:[],Viernes:[],Sabado:[],Domingo:[]};
 module.exports = (app) => {
     //endpoint construct routineObject
     app.post('/routineObject', async (req, res) => {
+        const routineObject = {correo:"", Lunes:[],Martes:[],Miercoles:[],Jueves:[],Viernes:[],Sabado:[],Domingo:[]};
         const correo=req.body.correo;
         console.log(correo);
         routineObject.correo=correo;
@@ -27,7 +27,7 @@ module.exports = (app) => {
                         case "Martes":
                             routineObject.Martes.push(routineData);
                             break;
-                        case "Miercoles":
+                        case "Miércoles":
                             routineObject.Miercoles.push(routineData);
                             break;
                         case "Jueves":
@@ -36,7 +36,7 @@ module.exports = (app) => {
                         case "Viernes":
                             routineObject.Viernes.push(routineData);
                             break;
-                        case "Sabado":
+                        case "Sábado":
                             routineObject.Sabado.push(routineData);
                             break;
                         case "Domingo":

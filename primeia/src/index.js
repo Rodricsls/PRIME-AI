@@ -7,6 +7,7 @@ import Login from './components/Login/Login'
 import Home from './components/Home/Home'
 import MiPerfil from './components/MiPerfil/MiPerfil'
 import Cuestionario from './components/Cuestionario/stepper/Cuestionario';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
 
