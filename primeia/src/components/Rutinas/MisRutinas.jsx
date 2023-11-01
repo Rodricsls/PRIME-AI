@@ -32,8 +32,7 @@ export default function MisRutinas(props) {
   //Constantes a utilizar en el componente
   const Hoy = new Date();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const drawerWidth = 240;
+
   const location = useLocation();
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Define isDrawerOpen in the state
@@ -135,10 +134,10 @@ export default function MisRutinas(props) {
   return (
 
     <Box style={{ overflowX: 'auto' }}>
-      <Container maxWidth="lg" sx={{ mt: 8, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 6, mb: 4 }}>
         <Grid container spacing={5}>
           <Grid item xs={4} md={4} lg={4} sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Paper sx={{ display: 'flex', flexDirection: 'column', height: 50, alignItems: 'center', backgroundColor: '#8ad449' }} onClick={toggleDrawer}>
+            <Paper sx={{ display: 'flex', flexDirection: 'column', height: 45, alignItems: 'center', backgroundColor: '#8ad449' }} onClick={toggleDrawer}>
               <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }}>
                 <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                   CREAR UNA NUEVA RUTINA
@@ -148,7 +147,7 @@ export default function MisRutinas(props) {
             </Paper>
           </Grid>
           <Grid item xs={12} md={18} lg={19}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: '50vh', alignItems: 'center', justifyContent: 'space-around' }}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: '40vh', alignItems: 'center', justifyContent: 'space-around' }}>
               <Typography component="h1" variant="h6" color="#3996D4" noWrap>
                 RUTINAS DEL DÍA
               </Typography>
