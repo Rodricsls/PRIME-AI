@@ -36,6 +36,9 @@ import SportsHandballIcon from '@mui/icons-material/SportsHandball';
 import './Home.css'
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import logo from './logo.png';
+
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 const drawerWidth = 240; //ancho del drawer
 const settings = ['Mi Perfil', 'Cerrar Sesion']; //opciones del menu de usuario
@@ -236,14 +239,13 @@ const handleTabChange = (event, newValue) => {
               </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
-            <Toolbar sx={{display:'flex', alignItems:'center', justifyContent:'flex-end', px:[0]}}>
-                <Typography component="h1" variant="h6" color="#3996D4" noWrap sx={{ flexGrow: 0 }}>  
-                    PRIME AI 
-                </Typography>
-                <SportsHandballIcon sx={{color:'#3996D4', flexGrow: 0}}/>
+            <Toolbar sx={{display:'flex', alignItems:'center', justifyContent:'space', px:[0]}}>
+                <img src={logo} alt="Logo-Primeia" border="0" width="170px" height="100px"/>
+              <div sx={{flexGrow:1, display:'flex', width:'100%', height:'100%'}}>
               <IconButton onClick={toggleDrawer}>
                 <ChevronLeftIcon />
               </IconButton>
+              </div>
             </Toolbar>
 
             <List component="nav">
@@ -251,7 +253,7 @@ const handleTabChange = (event, newValue) => {
                 <ListItemButton key={index} onClick={() => NavigationSelect(key)} sx={{ height: '90px' }}>
                   <ListItemIcon sx={{ textAlign: 'center' }}>
                     {index === 0 ? <HomeIcon sx={{ color: '#3996D4', textAlign: 'center' }} /> : ''}
-                    {index === 1 ? <RowingIcon sx={{ color: '#3996D4' }} /> : ''}
+                    {index === 1 ? <FitnessCenterIcon sx={{ color: '#3996D4' }} /> : ''}
                     {index === 2 ? <RestaurantMenuIcon sx={{ color: '#3996D4' }} /> : ''}
                   </ListItemIcon>
                   <ListItemText primary={key} />
@@ -288,8 +290,8 @@ const handleTabChange = (event, newValue) => {
                 </Grid>:''}
 
             </Container>
-            {RutinasPage ? <MisRutinas email={correo} /> : ''}
-            {DietasPage ? <MisDietas email={correo} /> : ''}
+            {RutinasPage ? <MisRutinas email={correo} open={open} /> : ''}
+            {DietasPage ? <MisDietas email={correo} open={open} /> : ''}
           </Box>
             
             
