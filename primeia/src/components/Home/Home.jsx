@@ -436,7 +436,7 @@ export default function Home() {
             ) : ''}
           </Container>
           {/* Componentes para otras páginas (Rutinas y Dietas) */}
-          {RutinasPage ? <MisRutinas email={correo} open={open} /> : ''}
+          {RutinasPage ? <MisRutinas email={correo} open={open} RutinasPage={RutinasPage} setRutinasPage={setRutinasPage} /> : ''}
           {DietasPage ? <MisDietas email={correo} open={open} /> : ''}
         </Box>
       </Box>

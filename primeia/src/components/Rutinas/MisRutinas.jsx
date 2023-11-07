@@ -26,6 +26,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import MisEjercicios from './MisEjercicios';
 
 // ...
 export default function MisRutinas(props) {
@@ -57,6 +58,8 @@ export default function MisRutinas(props) {
   const [rutinaDomingo, setRutinaDomingo] = useState([]);
   const [NombreRutina, setNombreRutina] = useState('');
   const [dayRoutine, setDayRoutine] = useState([]); //Dia de la rutina
+  const [MisRutinas, setMisRutinas] = useState(true); //Indicar si estamos en el componente de rutinas
+  const [Ejercicios, setMisEjercicios] = useState(false); //Indicar si estamos en el componente de ejercicios
   //obtenemos el correo de los props
   const correo = props.email
   const open = props.open
@@ -83,6 +86,7 @@ export default function MisRutinas(props) {
     };
 
     fetchData();
+    setMisEjercicios(false);
   }, []);
 
   function convertirObjetoAArray(objeto) {
@@ -130,10 +134,13 @@ export default function MisRutinas(props) {
 
   const ref = React.useRef(null);
 
+  console.log(dayRoutine);
+
 
   return (
-
+    
     <Box style={{ overflowX: 'auto' }}>
+      {MisRutinas ? /*Si estamos en el componente de rutinas*/
       <Container maxWidth="lg" sx={{ mt: 6, mb: 4 }}>
         <Grid container spacing={5}>
           <Grid item xs={4} md={4} lg={4} sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -170,7 +177,7 @@ export default function MisRutinas(props) {
                       </ListItem>
                     </AccordionSummary>
                     <AccordionDetails sx={{ display: 'flex', justifyContent: 'space-around', bgcolor: 'background.paper' }}>
-                      <IconButton color="primary" aria-label="edit" component="span" sx={{ backgroundColor: '#3996D4', borderRadius: 2 }}>
+                      <IconButton color="primary" onClick={() => {setMisEjercicios(true); setMisRutinas(false);}} aria-label="edit" component="span" sx={{ backgroundColor: '#3996D4', borderRadius: 2 }}>
                         <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                           Ver ejercicios
                         </Typography>
@@ -188,6 +195,12 @@ export default function MisRutinas(props) {
           </Grid>
         </Grid>
       </Container>
+      : '' /* Acaba el componente de Rutinas*/}
+
+      {Ejercicios ? /*Si estamos en el componente de ejercicios*/
+        <MisEjercicios email={correo} open={open} dayRoutine = {dayRoutine} setRutinasPage = {props.setRutinasPage} />
+        : '' /* Acaba el componente de ejercicios*/}
+
       <BottomNavigation
         showLabels
         variant="scrollable"
@@ -201,7 +214,7 @@ export default function MisRutinas(props) {
           pr: open ? 28 : 14,
         }}
         value={Day}
-        onChange={(event, newDay) => changeDay(newDay)}
+        onChange={(event, newDay) => {changeDay(newDay); setMisEjercicios(false); setMisRutinas(true);}}
 
       >
         {Day === 1 ? (
