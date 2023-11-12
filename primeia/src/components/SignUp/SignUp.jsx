@@ -272,7 +272,7 @@ export default function SignUp() {
 
         <Grid
           item
-          xs={false}
+          xs={12}
           sm={4}
           md={7}
           sx={{

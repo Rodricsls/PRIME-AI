@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import logo from './logo.png';
+import { useLocation } from "react-router-dom";
 
 import './Login.css';
 
@@ -34,6 +35,9 @@ export default function App() {
   const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
   const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
   const [MensajeError, setMensajeError] = useState('');
+  const location = useLocation();
+ const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
 
 
   //Funcion para cerrar el snackbar de exito
@@ -46,6 +50,48 @@ export default function App() {
         setSnackbarFailOpen(false);
       };
 
+  const checkTokenLogin = async () => {
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
+
+    if(token && email){
+      const response = await axios.post('http://localhost:8888/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
+      const data= response.data;
+      if(data.autenticacion){
+        navigate("/Home", {state:{email:email}});
+      }
+    }
+  }
+
+  const autenticacion = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        const response = await axios.post(
+          'http://localhost:8888/verificarToken', // Ajusta la ruta según tu servidor
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (response.data.autenticacion) {
+            setIsAuthenticated(true);
+        } else {
+            alert("Su sesión ha expirado");
+
+        }
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+    }
+  };
+
+
+  React.useEffect (() => {
+    checkTokenLogin();
+  },[]);
+
+
   //Funcion para enviar los datos del formulario y hacer Login      
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -54,6 +100,9 @@ export default function App() {
       const data= response.data;
       if(data.autenticacion){
         setSnackbarSuccessOpen(true);
+        console.log(data.token);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', email);
         navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
         SetValid(false);
       }else{
@@ -71,9 +120,9 @@ export default function App() {
           <CssBaseline />
           <Grid
             item
-            xs={false}
-            sm={8}
-            md={7}
+            xs={12} // 100% width on extra small devices
+            sm={8} // 66.66% width on small devices
+            md={7} // 58.33% width on medium devices
             sx={{
               backgroundImage: 'url(https://www.transparentlabs.com/cdn/shop/articles/image4_1200x1200.jpg?v=1604046768)',
               backgroundRepeat: 'no-repeat',
@@ -81,7 +130,7 @@ export default function App() {
               backgroundPosition: 'center',
             }}
           />
-          <Grid className='container'item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Grid className='container'item xs={12} sm={4} md={5} component={Paper} elevation={6} square>
             <Box className='Box'
               sx={{
                 my: 8,

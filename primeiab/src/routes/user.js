@@ -1,12 +1,13 @@
 const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
+const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 module.exports = (app) => {
     //Endpoint /user obtiene la informacion del usuario
-    app.post('/user', async (req, res) => {
+    app.post('/user', authenticateToken,async (req, res) => {
         try{
-            const query1=`SELECT nombre, apellido, peso, estatura, edad, imagen_usuario FROM usuario U WHERE U.correo=$1`;
+            const query1=`SELECT nombre, apellido, peso, estatura, edad, imagen_usuario, genero FROM usuario U WHERE U.correo=$1`;
             const values=[req.body.correo];
             const result=await queryAsync(query1, values);
             if (result.rows.length===0){
@@ -14,7 +15,7 @@ module.exports = (app) => {
             }else{
                 
                 res.json({ status: 0, mensaje: "Datos encontrados", resultado:true, nombre:result.rows[0].nombre , apellido:result.rows[0].apellido, 
-                            peso:result.rows[0].peso, estatura:result.rows[0].estatura, edad:result.rows[0].edad, imagen_usuario: result.rows[0].imagen_usuario});
+                            peso:result.rows[0].peso, estatura:result.rows[0].estatura, edad:result.rows[0].edad, imagen_usuario: result.rows[0].imagen_usuario, genero:result.rows[0].genero});
                 
             }
         }catch(error){

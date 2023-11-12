@@ -22,6 +22,7 @@ async function updateToday(dia){
 }
 async function updateNo(dia){
     console.log(update.noExercises);
+    console.log(dia);
     await queryAsync(update.noExercises, [dia]);
     console.log("No actualizado");
 }

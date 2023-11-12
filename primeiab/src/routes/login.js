@@ -3,6 +3,8 @@ const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const bcrypt = require("bcrypt");
 const select = require("./sql/SQuerys.js");
+const token=require("../middleware/authUser.js");
+const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 module.exports = (app) => {
     //Endpoint /login verifica si existe el usuario
@@ -16,7 +18,9 @@ module.exports = (app) => {
                 const aux=result.rows[0].contraseña;        
                 const contraseñasCoinciden = await bcrypt.compare(req.body.contraseña, aux);
                 if(contraseñasCoinciden){
-                    res.json({ status: 1, mensaje: "Usuario autenticado", autenticacion:true});
+                    const webtoken=token.authUser(req.body.correo, req.body.contraseña);
+                    console.log(webtoken);
+                    res.json({ status: 1, mensaje: "Usuario autenticado", autenticacion:true, token:webtoken});
                 }else{
                     res.json({ status: 0, mensaje: "contraseña incorrecta", autenticacion:false});
                 }
@@ -26,6 +30,12 @@ module.exports = (app) => {
         }
         
     });
+
+    /* Verificar token con auth */
+    app.post('/verificarToken', authenticateToken, (req, res) => {
+        res.json({ status: 1, mensaje: "Token verificado ", autenticacion:true});
+    }
+    );
 
 
 

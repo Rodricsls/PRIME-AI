@@ -12,10 +12,11 @@ require("./jobs/TaskFunctions");
 
 
 /* Un cron job que se ejecute todos los dias a las 11:58 */ 
-cron.schedule('55 11 * * *', () =>{
-    const date = new Date().getDate();
+cron.schedule('58 11 * * *', () =>{
+    const date = new Date();
+    const dia= date.getDay();
     let day;
-    switch(date){
+    switch(dia){
         case 0:{day="Domingo";break;}
         case 1:{day="Lunes";break;}
         case 2:{day="Martes";break;}
@@ -24,8 +25,26 @@ cron.schedule('55 11 * * *', () =>{
         case 5:{day="Viernes";break;}
         case 6:{day="Sábado";break;}
     }
-    updateToday(day);
+    
     updateNo(day);
+})
+
+/* Una cron job que se ejecute todos los dias a la 00:03 */
+cron.schedule('03 00 * * *', () =>{
+    const date = new Date();
+    const dia= date.getDay();
+    let day;
+    switch(dia){
+        case 0:{day="Domingo";break;}
+        case 1:{day="Lunes";break;}
+        case 2:{day="Martes";break;}
+        case 3:{day="Miércoles";break;}
+        case 4:{day="Jueves";break;}
+        case 5:{day="Viernes";break;}
+        case 6:{day="Sábado";break;}
+    }
+    
+    updateToday(day);
 })
 
 /*Una cron job que se ejecute todos los domingos a las 11:58*/

@@ -5,8 +5,9 @@ const queryAsync = util.promisify(pool.query).bind(pool);
 const select = require("./sql/SQuerys.js");
 const dietObject = {Lunes:{Desayuno:{}, Almuerzo:{}, Cena:{}},Martes:{Desayuno:{}, Almuerzo:{}, Cena:{}},Miercoles:{Desayuno:{}, Almuerzo:{}, Cena:{}},Jueves:{Desayuno:{}, Almuerzo:{}, Cena:{}},Viernes:{Desayuno:{}, Almuerzo:{}, Cena:{}},Sabado:{Desayuno:{}, Almuerzo:{}, Cena:{}},Domingo:{Desayuno:{}, Almuerzo:{}, Cena:{}}};
 const dias=["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"];
+const { authenticateToken } = require("../middleware/authMiddleware.js");
 module.exports=(app) =>{
-    app.post('/dietObject', async (req, res) => {
+    app.post('/dietObject', authenticateToken ,async (req, res) => {
         const correo=req.body.correo;
         try{
             const diet = await queryAsync(select.dietaId, [correo]);

@@ -90,6 +90,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme(); // Tema por defecto
 
 export default function Home() {
+  
   // Constantes a utilizar en el componente
   const [open, setOpen] = React.useState(false); // Estado para el drawer
   const [HomePage, setHomePage] = useState(true); // Estado para la página de inicio
@@ -105,8 +106,11 @@ export default function Home() {
   const [estatura, setEstatura] = useState(0); // Estado para la estatura del usuario
   const [edad, setEdad] = useState(0); // Estado para la edad del usuario
   const [imagen_usuario, setImagenUsuario] = useState('prueba.png'); // Estado para la imagen de usuario
+  const [genero, setGenero] = useState(''); // Estado para el género del usuario
   const [dayProgress, setDayProgress] = useState(0); // Estado para el progreso del día
+  
   const correo = location.state.email; // Correo del usuario obtenido de location
+  
   const Hoy = new Date();
   const [Day, setDay] = React.useState(Hoy.getDay()); // Obtenemos que día es hoy
   const [Racha, setRacha] = useState(0); // Estado para la racha del usuario
@@ -126,7 +130,7 @@ export default function Home() {
   // Función para obtener el progreso del día
   async function getDayProgress(Email, day) {
     try {
-      const response = await axios.post('http://localhost:8888/dayProgress', { correo: Email, dia: day });
+      const response = await axios.post('http://localhost:8888/dayProgress', { correo: Email, dia: day }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data;
       setDayProgress(data.progreso);
     } catch (error) {
@@ -137,7 +141,7 @@ export default function Home() {
   // Función para obtener la racha
   async function getRacha(Email) {
     try {
-      const response = await axios.post('http://localhost:8888/streak', { correo: Email });
+      const response = await axios.post('http://localhost:8888/streak', { correo: Email }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data.streak;
       setRacha(data.racha);
       console.log(Racha);
@@ -158,15 +162,19 @@ export default function Home() {
   // Función para obtener la información del usuario
   async function getData(Email) {
     try {
-      const response = await axios.post('http://localhost:8888/user', { correo: Email });
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:8888/user', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
       const data = response.data;
       if (data.resultado) {
+        console.log(data);
         setNombre(data.nombre);
         setApellido(data.apellido);
         setPeso(data.peso);
         setEstatura(data.estatura);
         setEdad(data.edad);
         setImagenUsuario(data.imagen_usuario);
+        setGenero(data.genero);
+        console.log(data.genero)
       } else {
         alert(data.mensaje);
       }
@@ -178,7 +186,8 @@ export default function Home() {
   // Función para obtener el progreso semanal
   async function getWeekProgress(Email) {
     try {
-      const response = await axios.post('http://localhost:8888/weekProgress', { correo: Email });
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:8888/weekProgress', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
       const data = response.data;
       console.log(data.total);
       setTotalWeek(data.total);
@@ -192,7 +201,8 @@ export default function Home() {
   // Función para obtener el top 3 de rachas
   async function getTop3() {
     try {
-      const result = await axios.post('http://localhost:8888/topThreeStreaks');
+      const token = localStorage.getItem('token');
+      const result = await axios.post('http://localhost:8888/topThreeStreaks',{}, { headers:{Authorization:`Bearer ${token}`} });
       const data = result.data;
       setTop3(data.topThreeStreaks);
     } catch (error) {
@@ -200,7 +210,7 @@ export default function Home() {
     }
   }
 
-  console.log(top3);
+  
 
   // useEffect utilizado para obtener la información del usuario al cargar la página
   useEffect(() => {
@@ -209,6 +219,29 @@ export default function Home() {
     getRacha(correo);
     getWeekProgress(correo);
     getTop3();
+
+    const checkToken = async () => {
+      try {
+        if (localStorage.getItem('token') === null || localStorage.getItem('email') === null) {
+          alert('No ha iniciado sesión');
+          navigate('/');
+        } else {
+          const response = await axios.post(
+            'http://localhost:8888/verificarToken',
+            {},
+            { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+          );
+  
+          if (!response.data.autenticacion) {
+            alert('Su sesión ha expirado');
+          }
+        }
+      } catch (error) {
+        console.error('Error al verificar el token:', error);
+      }
+    };
+  
+    checkToken();
   }, []);
 
   // Función para abrir el menú de usuario
@@ -237,6 +270,8 @@ export default function Home() {
       setDietasPage(false);
       setAnchorElUser(null);
     } else if (option === "Cerrar Sesion") {
+      localStorage.removeItem('email'); // Eliminamos el correo del localStorage
+      localStorage.removeItem('token'); // Eliminamos el token del localStorage
       navigate('/'); // Navegamos a la página de login
     }
   }
