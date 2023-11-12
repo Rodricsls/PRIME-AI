@@ -18,7 +18,7 @@ import { Password } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import axios from 'axios';
-
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 
 
 export default function CreateRoutine() {
@@ -32,6 +32,7 @@ export default function CreateRoutine() {
   const [tiempo, setTiempo] = React.useState('');
   const [tipo_ejercicio, setTipoEjercicio] = React.useState('');
   const [NombreRutina, setNombreRutina] = React.useState('');
+  const [Loading, setLoading] = React.useState(false);
 
  
   
@@ -135,6 +136,7 @@ const SnackbarFailClose = () => {
   //Register a user using axios 
 
   async function crearRutina(){
+      setLoading(true);
       try{ 
         const token = localStorage.getItem('token'); 
         const response = await axios.post('http://localhost:8888/createRoutine',{correo:correoUsuario,
@@ -148,6 +150,7 @@ const SnackbarFailClose = () => {
                                                                                   equipo:equipo, 
                                                                                   genero:generoUsuario,
                                                                                   nombre_rutina:NombreRutina}, { headers:{Authorization:`Bearer ${token}`} });
+        setLoading(false);
         const data= response.data;
         console.log(data);
         if(data.status === 1){
@@ -174,54 +177,57 @@ const SnackbarFailClose = () => {
   return (
     <Grid className='main' container component="main" sx={{ minHeight: '100vh', width:'100%', height:'100vh', minWidth:'100vh' }}>
 
-      <Stack className='stack'sx={{ width: '100%' }} >
-        <Box className='box' sx={{ width: '100%' }}>
-          <div>
-            <Stepper activeStep={activeStep} className='custom-stepper'>
-              {stepsData.map((step, index) => (
-                <Step key={index}>
-                  <StepLabel>{step.label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            <div className='combo'>
-              {currentStep ? (
-              <div className='form'>{currentStep.form}</div>
-              ) : null}
-              <div className='buttons'>
-                <Button
-                  variant="contained"
-                  disabled={activeStep === 0}
-                  sx={{color:'white', bgcolor:' #6dbf26'}}
-                  onClick={handleBack}
-                >
-                  Back
-                </Button>
-                
-                  {activeStep === stepsData.length - 1 ? (
+      {Loading ? <LoadingScreen/> : 
+
+        <Stack className='stack'sx={{ width: '100%' }} >
+          <Box className='box' sx={{ width: '100%' }}>
+            <div>
+              <Stepper activeStep={activeStep} className='custom-stepper'>
+                {stepsData.map((step, index) => (
+                  <Step key={index}>
+                    <StepLabel>{step.label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+              <div className='combo'>
+                {currentStep ? (
+                <div className='form'>{currentStep.form}</div>
+                ) : null}
+                <div className='buttons'>
                   <Button
-                  variant="contained"
-                  sx={{color:'white', bgcolor:' #6dbf26'}}
-                  onClick={() => crearRutina()}
-                >
-                
-                  Finish
-                
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  sx={{color:'white', bgcolor:' #6dbf26'}}
-                  onClick={handleNext}
-                >
-                Next
+                    variant="contained"
+                    disabled={activeStep === 0}
+                    sx={{color:'white', bgcolor:' #6dbf26'}}
+                    onClick={handleBack}
+                  >
+                    Back
                   </Button>
-              )}
+                  
+                    {activeStep === stepsData.length - 1 ? (
+                    <Button
+                    variant="contained"
+                    sx={{color:'white', bgcolor:' #6dbf26'}}
+                    onClick={() => crearRutina()}
+                  >
+                  
+                    Finish
+                  
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    sx={{color:'white', bgcolor:' #6dbf26'}}
+                    onClick={handleNext}
+                  >
+                  Next
+                    </Button>
+                )}
+                </div>
               </div>
             </div>
-          </div>
-        </Box>
-      </Stack>
+          </Box>
+        </Stack>
+      }
         <Snackbar open={SnackbarSuccessOpen} autoHideDuration={6000} onClose={SnackbarSuccessClose}>
       <MuiAlert elevation={6} variant="filled" onClose={SnackbarSuccessClose} severity="success" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
         Rutina creada exitosamente!

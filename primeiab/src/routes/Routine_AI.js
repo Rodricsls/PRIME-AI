@@ -43,7 +43,7 @@ function createRequest(Tipo_ejercicio,edad,peso,altura,dedicacion,dias,tiempo, e
 /*hacemos la petición de la rutina al modelo AI*/
 async function RoutineRequest(request){
     //expresion regular que verifica incidencias del formato en el response
-    const regex=/(Lunes|Martes|Miércoles|Jueves|Viernes|Sabado|Domingo)--([^--]+)--([^--]+)--(Repeticiones|Tiempo)--(\d+ series)--(\d+ (?:repeticiones|segundos))/g;
+    const regex=/(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo)--([^--]+)--([^--]+)--(Repeticiones|Tiempo)--(\d+ series)--(\d+ (?:repeticiones|segundos))/g;
     try{
 
         const response = await openai.completions.create({
@@ -79,7 +79,7 @@ async function RoutineRequest(request){
 /*Nos encargamos de dividir cada uno de los ejercicios generados por dia*/
 function Parser(routine){
     //expresion regular que verifica cada posicion en el array
-    const regex=/(Lunes|Martes|Miércoles|Jueves|Viernes|Sabado|Domingo)--([^--]+)--([^--]+)--(Repeticiones|Tiempo)--(\d+ series)--(\d+ (?:repeticiones|segundos))/;
+    const regex=/(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo)--([^--]+)--([^--]+)--(Repeticiones|Tiempo)--(\d+ series)--(\d+ (?:repeticiones|segundos))/;
     let incidencias=0;
     let routines=[];
     
