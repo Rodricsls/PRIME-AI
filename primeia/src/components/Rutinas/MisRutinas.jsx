@@ -56,7 +56,7 @@ export default function MisRutinas(props) {
   const estatura = props.estatura
   const genero = props.genero
   const open = props.open
-  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
+ 
   //Funcion para cambiar de dia de rutina
   function changeDay(day) {
 
