@@ -8,6 +8,7 @@ import Home from './components/Home/Home'
 import MiPerfil from './components/MiPerfil/MiPerfil'
 import Cuestionario from './components/Cuestionario/stepper/Cuestionario';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
+import CreateDiet from './components/CreateDiet/CreateDiet';
 import CreateRoutine from './components/CreateRoutine/CreateRoutine';
 import axios from 'axios';
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path:'/CreateRoutine/*',
     element:<ProtectedRoute><CreateRoutine/></ProtectedRoute>
+  },
+  {
+    path:'/CreateDiet/*',
+    element:<ProtectedRoute><CreateDiet/></ProtectedRoute>
   }
 ]);
 

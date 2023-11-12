@@ -53,6 +53,23 @@ cron.schedule('58 11 * * 0', () =>{
     updateStreak();
 })
 
+/* Una cron job que se ejecute a la una de la tarde */
+cron.schedule('58 11 * * *', () =>{
+    const date = new Date();
+    const dia= date.getDay();
+    let day;
+    switch(dia){
+        case 0:{day="Domingo";break;}
+        case 1:{day="Lunes";break;}
+        case 2:{day="Martes";break;}
+        case 3:{day="Miércoles";break;}
+        case 4:{day="Jueves";break;}
+        case 5:{day="Viernes";break;}
+        case 6:{day="Sábado";break;}
+    }
+    updateNo(day);
+})
+
 
 app.listen(app.get("port"), 
 () => console.log(`Escuchando en servidor puerto : ${app.get("port")}`));

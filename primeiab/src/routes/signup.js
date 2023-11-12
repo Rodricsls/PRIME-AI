@@ -37,6 +37,18 @@ module.exports = (app) => {
             const peticion= Routine_AI.createRequest(req.body.tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
             const routine= await Routine_AI.RoutineRequest(peticion);
             let routine_array=Routine_AI.Parser(routine);
+            const date=new Date().getDay();
+            let day_c;
+            switch(date){
+                case 0:{day_c="Domingo";break;}
+                case 1:{day_c="Lunes";break;}
+                case 2:{day_c="Martes";break;}
+                case 3:{day_c="Miércoles";break;}
+                case 4:{day_c="Jueves";break;}
+                case 5:{day_c="Viernes";break;}
+                case 6:{day_c="Sábado";break;}
+            }
+
 
             // Insert workout routine data into database
             const tipo = req.body.tipo_ejercicio+" "+req.body.correo;
@@ -50,15 +62,19 @@ module.exports = (app) => {
                     await queryAsync(insert.Ejercicios, [Obj_routine.ejercicio, Obj_routine.musculo]);
                 }
                 const ejercicio_id= (await queryAsync(select.EjercicioidS, [Obj_routine.ejercicio])).rows[0].id_ejercicio;
+                let complete=(Obj_routine.dia==day_c?"hoy":"aun");
+
                 if(Obj_routine.tipo=='Repeticiones'){
-                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia, complete]);
                 }else{
-                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia, complete]);
                 }
             }
 
+            //Insert into rachas
+           await queryAsync(insert.rachas, [req.body.correo]);
             // Generate diet using AI model 
-            const diet=Diet_AI.createRequest(req.body.objetivo, req.body.edad, req.body.estatura, req.body.peso, req.body.alimentacion, req.body.restricciones);
+            const diet=Diet_AI.createRequest(req.body.objetivo, req.body.edad, req.body.estatura, req.body.peso, req.body.genero ,req.body.alimentacion, req.body.restricciones);
             const diet_response= await Diet_AI.DietRequest(diet);
             let diet_array=Diet_AI.Parser(diet_response);
             let diet_simplified=Diet_AI.simplifier(diet_array);

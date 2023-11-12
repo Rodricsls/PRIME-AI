@@ -8,17 +8,14 @@ import Grid from '@mui/material/Grid';
 import { Stack, TextField } from '@mui/material';
 import Form2 from './Form2/Form2';
 import Form1 from './Form1/Form1';
-import Form3 from './Form 3/Form3';
-import {Link} from 'react-router-dom';
-import { Route } from 'react-router-dom';
+
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import './Cuestionario.css';
-import { Password } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import axios from 'axios';
-import LoadingScreen from '../../LoadingScreen/LoadingScreen';
+import LoadingScreen from '../LoadingScreen/LoadingScreen'; 
 
 
 
@@ -33,74 +30,24 @@ export default function Cuestionario() {
   const [restricciones, setRestricciones] = React.useState('');
   const [objetivo, setObjetivo] = React.useState('');
   const [dedicacion, setDedicacion] = React.useState('');
-  const [equipo, setEquipo] = React.useState('');
-  const [tiempo, setTiempo] = React.useState('');
-  const [tipo_ejercicio, setTipoEjercicio] = React.useState('');
-  const [edad, setEdad] = React.useState(20);
-  const [estatura, setEstatura] = React.useState(100);
-  const [peso, setPeso] = React.useState(70);
-  const [genero, setGenero] = React.useState('');
-  const [NombreRutina, setNombreRutina] = React.useState('');
-  const [dia, setDia]= React.useState({
-    domingo: false,
-    lunes: false,
-    martes: false,
-    miercoles: false,
-    jueves: false,
-    viernes: false,
-    sabado: false
-  });
+
+
+
   //Obteniendo informacion enviada desde Cuestionario
   const location = useLocation();
   const navigate = useNavigate();
-  const name = location.state.Nombre;
-  const apellido = location.state.Apellido;
-  const email = location.state.Email;
-  const password = location.state.Password;
-  const confirmpassword = location.state.ConfirmedPassword;
- 
-  const handleNombreRutinaChange = (event) => {
-    setNombreRutina(event.target.value);
-  };
-  const handleEdadChange = (event) => {
-    setEdad(event.target.value);
-  };
+  const email = location.state.correo;
 
-  const handleEstaturaChange = (newValue) => {
-    setEstatura(newValue);
-  };
+  const edad = location.state.edad;
+  const peso = location.state.peso;
+  const estatura = location.state.estatura;
+  const genero = location.state.genero;
 
-  const handlePesoChange = (newValue) => {
-    setPeso(newValue);
-  };
-
-  const handleDiaChange = (event) => {
-    const { name, checked } = event.target;
-    setDia({
-      ...dia,
-      [name]: checked,
-    });
-  };
-
-  const handleGeneroChange = (event) => {
-    setGenero(event.target.value);
-  };
-
-  const handleTipoRutinaChange = (event) => {
-    setTipoEjercicio(event.target.value);
-  };
-
-  const handleTiempoChange = (event) => {
-    setTiempo(event.target.value);
-  };
 
   const handleDedicacionChange = (event) => {
     setDedicacion(event.target.value);
   };
 
-  const handleEquipoChange = (event) => {
-    setEquipo(event.target.value);
-  };
 
   const handleObjetivoChange = (event) => {
     setObjetivo(event.target.value);
@@ -124,7 +71,7 @@ const SnackbarFailClose = () => {
   };
 
   function finishForm() {
-    navigate('/');//Regresamos a la pagina  de login
+    navigate('/Home',{state:{email:email}});//Regresamos a la pagina  de login
   }
 
   const stepsData = [
@@ -134,8 +81,6 @@ const SnackbarFailClose = () => {
       form:<Form1
             dedicacion = {dedicacion}
             handleDedicacionChange = {handleDedicacionChange}
-            equipo = {equipo} 
-            handleEquipoChange = {handleEquipoChange}
             alimentacion = {alimentacion}
             handleAlimentacionChange = {handleAlimentacionChange}
             restricciones = {restricciones}
@@ -144,32 +89,11 @@ const SnackbarFailClose = () => {
     {
       label: 'Paso 2',
       // Renderiza el formulario correspondiente para el Paso 2
-      form: <Form2 className="questions" 
-              dia={dia} 
-              handleDiaChange={handleDiaChange}
-              tiempo = {tiempo}
-              handleTiempoChange = {handleTiempoChange}
+      form: <Form2 className="questions"         
               objetivo = {objetivo}
               handleObjetivoChange = {handleObjetivoChange}
-              tipo_ejercicio = {tipo_ejercicio}
-              handleTipoRutinaChange = {handleTipoRutinaChange}
-              nombreRutina = {NombreRutina}
-              handleNombreRutinaChange = {handleNombreRutinaChange}
                />,
     },
-    {
-      label: 'Paso 3',
-      // Renderiza el formulario correspondiente para el Paso 3
-      form: <Form3  edad={edad}
-      estatura={estatura}
-      peso={peso}
-      handleEdadChange={handleEdadChange}
-      handleEstaturaChange={handleEstaturaChange}
-      handlePesoChange={handlePesoChange} 
-      genero = {genero} 
-      handleGeneroChange = {handleGeneroChange}/>,
-    },
-    // Agrega más pasos según sea necesario
   ];
   //Indica cual step es el activo  
   const [activeStep, setActiveStep] = React.useState(0);
@@ -189,7 +113,7 @@ const SnackbarFailClose = () => {
 
   //Register a user using axios 
 
-  async function RegistrarUsuario(){
+  async function CrearDieta(){
     let restriccionAlimenticia = '';
       if(restricciones.toLowerCase() === 'nada'){
         restriccionAlimenticia = 'no tiene restricciones alimenticias'
@@ -198,16 +122,16 @@ const SnackbarFailClose = () => {
       }
       setLoading(true);
       try{  
-        const response = await axios.post('http://localhost:8888/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
-                                                                          peso:peso, estatura:estatura,imagen_usuario:"#", edad:edad,tipo_ejercicio:tipo_ejercicio ,
-                                                                          dias:dia,tiempo:tiempo, dedicacion:dedicacion, 
-                                                                          equipo:equipo, objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero, nombre_rutina:NombreRutina});
-        setLoading(false);                                                                  
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8888/createDiet',{correo:email, 
+                                                                          peso:peso, estatura:estatura,edad:edad, dedicacion:dedicacion, 
+                                                                           objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero}, { headers:{Authorization:`Bearer ${token}`}});        setLoading(false);                                                                  
         const data= response.data;
         if(data.status === 1){
           setSnackbarSuccessOpen(true);
-          navigate("/"); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
-          console.log("Usuario registrado correctamente");
+          console.log(email)
+          navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
+          console.log("dieta creada correctamente");
 
         }else{
           console.log(data);
@@ -264,7 +188,7 @@ const SnackbarFailClose = () => {
                   <Button
                   variant="contained"
                   sx={{color:'white', bgcolor:' #6dbf26'}}
-                  onClick={() => RegistrarUsuario()}
+                  onClick={() => CrearDieta()}
                 >
                 
                   Finish
