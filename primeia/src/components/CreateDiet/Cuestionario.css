@@ -1,0 +1,77 @@
+.main{
+    display: flex;
+    flex-direction: row;
+
+    background: linear-gradient(260deg,#21457F,#3996D4);
+    padding: 60px;
+}
+
+html{
+    min-height: 100vh;
+    height: 100%;
+}
+
+
+.main .container{
+    background: linear-gradient(260deg,#21457F,#3996D4);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+.custom-stepper .css-1hv8oq8-MuiStepLabel-label{
+    
+    color: white;
+    width:50px;
+    height: 50px;
+}
+.custom-stepper .css-1hv8oq8-MuiStepLabel-label.Mui-active {
+    color: white;
+    font-weight: 500;
+    width:50px;
+    height: 50px;
+}
+
+
+.custom-stepper .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root {
+    color:#6dbf26;
+    width:50px;
+    height:50px;
+    
+}
+
+.custom-stepper .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+    color:#6dbf26;
+    width:50px;
+    height:50px;
+}
+
+.custom-stepper .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+    color: #6dbf26;
+}
+
+.form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:25px;
+}
+
+.combo{
+    margin: 25px;
+}
+
+.buttons{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin:15px;
+}
+
+
+.custom-stepper .radio .css-vqmohf-MuiButtonBase-root-MuiRadio-root.Mui-checked {
+    color:#6dbf26;
+}
