@@ -199,7 +199,7 @@ const SnackbarFailClose = () => {
       setLoading(true);
       try{  
         const response = await axios.post('http://localhost:8888/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
-                                                                          peso:peso, estatura:estatura,imagen_usuario:"#", edad:edad,tipo_ejercicio:tipo_ejercicio ,
+                                                                          peso:peso, estatura:estatura,imagen_usuario:"avatar.jpg", edad:edad,tipo_ejercicio:tipo_ejercicio ,
                                                                           dias:dia,tiempo:tiempo, dedicacion:dedicacion, 
                                                                           equipo:equipo, objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero, nombre_rutina:NombreRutina});
         

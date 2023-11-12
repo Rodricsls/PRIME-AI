@@ -22,6 +22,7 @@ import MisEjercicios from './MisEjercicios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 
 // ...
@@ -39,6 +40,7 @@ export default function MisRutinas(props) {
   };
   const [routineObject, setRoutineObject] = useState([]); //Objeto que contiene la rutina
 
+
   
 
   // Informacion de rutina para cada dia
@@ -53,6 +55,7 @@ export default function MisRutinas(props) {
   const estatura = props.estatura
   const genero = props.genero
   const open = props.open
+  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
   //Funcion para cambiar de dia de rutina
   function changeDay(day) {
 
