@@ -3,10 +3,11 @@ const pool = require("../db");
 const util = require('util');
 const queryAsync = util.promisify(pool.query).bind(pool);
 const select = require("./sql/SQuerys.js");
+const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 module.exports = (app) => {
 
-    app.post('/dayProgress', async (req, res) => {
+    app.post('/dayProgress',authenticateToken ,async (req, res) => {
         try{
             const correo=req.body.correo;
             const dia=req.body.dia;
@@ -36,7 +37,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/weekProgress', async (req, res) => {
+    app.post('/weekProgress', authenticateToken,async (req, res) => {
         try{
             const correo=req.body.correo;
             const total= (await queryAsync(select.totalWeek, [correo])).rows[0].count;
@@ -51,7 +52,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/streak', async (req, res) => {
+    app.post('/streak', authenticateToken,async (req, res) => {
         try{
             const correo=req.body.correo;
             const result= (await queryAsync(select.streak, [correo])).rows[0];
@@ -61,7 +62,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/topThreeStreaks', async (req, res) => {
+    app.post('/topThreeStreaks', authenticateToken,async (req, res) => {
         try{
             const result= (await queryAsync(select.topThreeStreaks)).rows;
             res.json({ status: 1, mensaje: "Top 3 rachas obtenido", topThreeStreaks:result});

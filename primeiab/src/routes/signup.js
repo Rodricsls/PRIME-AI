@@ -27,6 +27,7 @@ module.exports = (app) => {
                 req.body.estatura,
                 req.body.imagen_usuario,
                 req.body.edad,
+                req.body.genero
             ];
             // Insert user data into database
             await queryAsync(insert.User, values);
@@ -41,7 +42,7 @@ module.exports = (app) => {
             const tipo = req.body.tipo_ejercicio+" "+req.body.correo;
             await queryAsync(insert.Rutina, [tipo]);
             const rutina_id=(await queryAsync(select.rutinaIdS, [tipo])).rows[0].id_rutina;
-            await queryAsync (insert.rutina_asignar, [req.body.correo, rutina_id]);
+            await queryAsync (insert.rutina_asignar, [req.body.correo, rutina_id, req.body.nombre_rutina]);
             for (i=0; i<routine_array.length; i++){
                 let Obj_routine=Routine_AI.simplifier(routine_array[i]);
                 const vef_ejercicio=await queryAsync(verify.ejercicio_exist, [Obj_routine.ejercicio]);

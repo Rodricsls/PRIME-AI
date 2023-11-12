@@ -59,6 +59,10 @@ export default function MisRutinas(props) {
   const [dayRoutine, setDayRoutine] = useState([]); //Dia de la rutina
   //obtenemos el correo de los props
   const correo = props.email
+  const edad = props.edad
+  const peso = props.peso
+  const estatura = props.estatura
+  const genero = props.genero
   const open = props.open
   //Funcion para cambiar de dia de rutina
   function changeDay(day) {
@@ -72,7 +76,8 @@ export default function MisRutinas(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo });
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
         setRoutineObject(convertirObjetoAArray(response.data.rutina));
 
         const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
@@ -128,6 +133,15 @@ export default function MisRutinas(props) {
     return arrayResultado;
   }
 
+  //Funcion para navegar a cuestioario de Crear Rutina
+  function createRoutine(){
+    navigate("/CreateRoutine", {state:{correo:correo, edad:edad, peso:peso, estatura:estatura, genero:genero}}); 
+  }
+
+
+
+
+
   const ref = React.useRef(null);
 
 
@@ -138,7 +152,7 @@ export default function MisRutinas(props) {
         <Grid container spacing={5}>
           <Grid item xs={4} md={4} lg={4} sx={{ display: 'flex', flexDirection: 'column' }}>
             <Paper sx={{ display: 'flex', flexDirection: 'column', height: 45, alignItems: 'center', backgroundColor: '#8ad449' }} onClick={toggleDrawer}>
-              <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }}>
+              <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }} onClick={()=>createRoutine()}>
                 <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                   CREAR UNA NUEVA RUTINA
                 </Typography>
@@ -154,12 +168,12 @@ export default function MisRutinas(props) {
               {dayRoutine.length === 0 ? (
                 <Typography color="black" variant="body1" sx={{ mb: 4 }} >NO HAY RUTINAS EN ESTE DÍA</Typography>
               ) : (
-                dayRoutine.map((ejercicio, index) => ( console.log(ejercicio),
+                dayRoutine.map((ejercicio, index) => ( console.log("aca",ejercicio),
                   <Accordion key={index} sx={{ width: '100%', maxWidth: 360, bgcolor: '#8ad449' }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <ListItem>
                         <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
-                          {ejercicio.idr}
+                          {ejercicio.nr}
                         </Typography>
                         <ListItemAvatar>
                           <Avatar>
