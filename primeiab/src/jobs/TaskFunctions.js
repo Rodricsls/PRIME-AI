@@ -24,6 +24,10 @@ async function updateNo(dia){
     console.log(update.noExercises);
     console.log(dia);
     await queryAsync(update.noExercises, [dia]);
+    console.log("dia", dia);
+    console.log(update.noStreak);
+    await queryAsync(update.noStreak);
+    await queryAsync(update.resetStreak);
     console.log("No actualizado");
 }
 module.exports = {

@@ -11,8 +11,8 @@ const openai = new OpenAI({
 const regex=/(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo)--(Desayuno|Almuerzo|Cena)--[^;]+/g;
 
 //create a request for the model    
-function createRequest(Tipo_dieta,edad,altura,peso,dedicacion,restricciones){
-    request="Haz una dieta de "+Tipo_dieta+" para una persona hombre de "+edad+" años, que mide "+altura+" cm y pesa "+peso+" lb, el cual cuida "+dedicacion+" su alimentacion y "+restricciones+".";
+function createRequest(Tipo_dieta,edad,altura,peso,genero,dedicacion,restricciones){
+    request="Haz una dieta de "+Tipo_dieta+" para una persona "+genero+ "de "+edad+" años, que mide "+altura+" cm y pesa "+peso+" lb, el cual cuida "+dedicacion+" su alimentacion y "+restricciones+".";
     
     return request
 }

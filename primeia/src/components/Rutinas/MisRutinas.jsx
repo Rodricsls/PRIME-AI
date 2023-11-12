@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 export default function MisRutinas(props) {
   //Constantes a utilizar en el componente
   const Hoy = new Date();
+  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
   const [MensajeError, setMensajeError] = useState('');
   const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
   const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
@@ -55,7 +56,7 @@ export default function MisRutinas(props) {
   const estatura = props.estatura
   const genero = props.genero
   const open = props.open
-  const navigate = useNavigate(); //navigate utilizado para navegar entre paginas
+ 
   //Funcion para cambiar de dia de rutina
   function changeDay(day) {
 

@@ -66,6 +66,7 @@ async function RoutineRequest(request){
           if(response.choices[0].text.match(regex)!=null && zero_duplicates.length > 7 ){
             return zero_duplicates;
           }else{
+            console.log("Se volvio a generar una rutina");
             return await(RoutineRequest(request));
           }
 

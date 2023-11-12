@@ -17,12 +17,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardHeader } from '@mui/material';
 import axios from 'axios';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import './MisDietas.css';
+import Button from '@mui/material/Button';
 
 // Define custom styles for the Accordion, AccordionSummary, and AccordionDetails components
 const Accordion = styled((props) => (
@@ -66,11 +65,33 @@ export default function MisDietas(props) {
   // Define variables de estado
   const [dietObject, setDietObject] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
+  const navigate = useNavigate();
+   // Email obtenido de las propiedades
+   const correo = props.email
+   const edad = props.edad
+   const peso = props.peso
+   const estatura = props.estatura
+   const genero = props.genero
 
   // Funciones para cambiar las pestañas
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
+
+  //Funcion para navegar a cuestioario de Crear Rutina
+  function createDiet(){
+    navigate("/CreateDiet", {state:{correo:correo, edad:edad, peso:peso, estatura:estatura, genero:genero}}); 
+  }
+  const handleDeleteDiet = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:8888/deleteDiet',{correo:correo}, { headers:{Authorization:`Bearer ${token}`} });
+      setDietObject(convertirObjetoAArray(response.data.dieta));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   const handlePrevTab = () => {
     setActiveTab((prevTab) => prevTab - 1);
@@ -85,7 +106,7 @@ export default function MisDietas(props) {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8888/dietObject', { correo: mail }, { headers:{Authorization:`Bearer ${token}`} });
+        const response = await axios.post('http://localhost:8888/dietObject', { correo: correo }, { headers:{Authorization:`Bearer ${token}`} });
         setDietObject(convertirObjetoAArray(response.data.dieta));
       } catch (error) {
         console.error(error);
@@ -95,8 +116,7 @@ export default function MisDietas(props) {
     fetchData();
   }, []);
 
-  // Email obtenido de las propiedades
-  const mail = props.email;
+ 
 
   // Función para convertir un objeto en un array
   function convertirObjetoAArray(objeto) {
@@ -135,6 +155,14 @@ export default function MisDietas(props) {
               Mis Dietas
             </Typography>
           </Grid>
+          <Grid item xs={12}>
+          <Button variant="contained" color="secondary" onClick={handleDeleteDiet} disabled={dietObject.length === 0}>
+            Delete Diet
+          </Button>
+          <Button variant="contained" color="primary" onClick={()=>createDiet()} disabled={dietObject.length !== 0}>
+            Create Diet
+          </Button>
+        </Grid>
           <Grid item xs={12} container spacing={2}>
             {dietObject.map((dia, index) => (
               <div key={index} hidden={activeTab !== index} style={{ width: '100%' }}>
