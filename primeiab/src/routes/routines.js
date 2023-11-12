@@ -53,4 +53,20 @@ module.exports = (app) => {
             res.json({ status: 0, mensaje: "Error en el servidor" + error.message});
         }
     });
+
+    app.post('/DeleteRutina', async (req, res) => {
+        try{
+            const query1=`DELETE FROM asignar_rutinas WHERE id_rutina = $2 and correo =$1`;
+            const values=[req.body.correo, req.body.id_rutina];
+            const result=await queryAsync(query1, values);            
+
+                res.json({ status: 1, mensaje: "Rutina Eliminada exitosamente!"});
+                
+            
+        }catch(error){
+            res.json({ status: 0, mensaje: "Error en el servidor" + error.message});
+        }
+        
+    });
+
 }

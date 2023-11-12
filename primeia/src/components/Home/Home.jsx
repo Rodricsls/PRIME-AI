@@ -1,4 +1,4 @@
-import React, { Component } from 'react'; // Importaciones de React y Component
+import React from 'react'; // Importaciones de React y Component
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'; // Importaciones de Material-UI
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -32,7 +32,6 @@ import { Grid, Paper } from '@mui/material';
 import './Home.css'
 import logo from './logo.png';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import ReactApexCharts from 'react-apexcharts';
 import RadialBar from '../charts/charts';
 import BarChart from '../charts/barchart';
 import CheckIcon from '@mui/icons-material/Check';
@@ -105,7 +104,7 @@ export default function Home() {
   const [peso, setPeso] = useState(0); // Estado para el peso del usuario
   const [estatura, setEstatura] = useState(0); // Estado para la estatura del usuario
   const [edad, setEdad] = useState(0); // Estado para la edad del usuario
-  const [imagen_usuario, setImagenUsuario] = useState(''); // Estado para la imagen de usuario
+  const [imagen_usuario, setImagenUsuario] = useState('prueba.png'); // Estado para la imagen de usuario
   const [dayProgress, setDayProgress] = useState(0); // Estado para el progreso del día
   const correo = location.state.email; // Correo del usuario obtenido de location
   const Hoy = new Date();
@@ -227,11 +226,7 @@ export default function Home() {
     setOpen(!open);
   };
 
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
+  
 
   // Función para manejar las opciones del menú de usuario
   function handleProfileOptions(option) {
@@ -287,7 +282,7 @@ export default function Home() {
             {/* Menú de usuario */}
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Avatar sx={{ backgroundColor: '#6dbf26' }} alt={nombre} src="/static/images/avatar/2.jpg" />
+                <Avatar sx={{ backgroundColor: '#6dbf26' }} alt={nombre} src={require(`../avatars/${imagen_usuario}`)} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -438,6 +433,7 @@ export default function Home() {
           {/* Componentes para otras páginas (Rutinas y Dietas) */}
           {RutinasPage ? <MisRutinas email={correo} open={open} RutinasPage={RutinasPage} setRutinasPage={setRutinasPage} /> : ''}
           {DietasPage ? <MisDietas email={correo} open={open} /> : ''}
+          {MyProfilePage ? <MiPerfil email={correo} open={open} nombre={nombre} apellido={apellido} peso={peso} edad={edad} estatura={estatura} imagen_usuario={imagen_usuario} /> : '' }
         </Box>
       </Box>
     </ThemeProvider>

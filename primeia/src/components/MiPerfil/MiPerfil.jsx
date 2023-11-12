@@ -19,24 +19,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 import { useState } from "react";
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-
 
 
 export default function MiPerfil(props) {
     //Constantes a utilizar en el componente
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [Correo2, setCorreo] = useState('');
     const [nombre2, setNombre] = useState('');
     const [apellido2, setApellido] = useState('');
     const [peso2, setPeso] = useState(0);
     const [estatura2, setEstatura] = useState(0);
     const [edad2, setEdad] = useState(0);
-    const [imagen_usuario2, setImagenUsuario] = useState('');
+    const [imagen_usuario2, setImagenUsuario] = useState('prueba.png');
     const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
     const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
     const [MensajeError, setMensajeError] = useState('');
@@ -49,8 +43,6 @@ export default function MiPerfil(props) {
     const estatura =props.estatura;
     const edad =props.edad;
     const imagen_usuario =props.imagen_usuario;
-
-
     //Funcion para abrir el snackbar de exito
     const SnackbarSuccessClose = () => {
       setSnackbarSuccessOpen(false);
@@ -72,15 +64,16 @@ export default function MiPerfil(props) {
       setOpen(false);
     };
 
-    
-
+    const HandleImageChange = (event) => {
+      setImagenUsuario(event.target.files[0].name);
+    }
 
     
     //Funcion para actualizar los datos del usuario
     async function ActualizarDatos(){
           setOpen(false);
           try{
-            const response = await axios.post('http://localhost:8888/ActualizarUser',{newCorreo:Correo2, newPeso:peso2, newEstatura:estatura2, oldCorreo:correo});
+            const response = await axios.post('http://localhost:8888/ActualizarUser',{newCorreo:correo, newPeso:peso2, newEstatura:estatura2, newImagen:imagen_usuario2, oldCorreo:correo});
             const data= response.data;
             
             console.log(data);
@@ -96,7 +89,6 @@ export default function MiPerfil(props) {
 
       //Funcion para convertir los datos constantes del usuario en estados que puedan cambiar
       function transferInformation(){
-          setCorreo(correo);
           setNombre(nombre);
           setApellido(apellido);
           setPeso(peso);
@@ -122,17 +114,19 @@ export default function MiPerfil(props) {
     return (
         
     
-      <Box component="main" sx={{ flexGrow: 1, p: 3, background: '#E5FFF7', width:'100%', height:'1300px'}}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, width:'100%', height:'100%'}}>
            
-            
-            <Avatar
+           <Button variant="contained" component="label" sx={{ position:'absolute', top:'23%' , left:'20%'}}>
+             Cambiar Imagen
+             <input type="file" hidden onChange={HandleImageChange} />
+           </Button>
+            <Avatar 
+                src={require(`../avatars/${imagen_usuario2}`)}
                 alt={nombre}
-                src="/static/images/avatar/1.jpg"
-                sx={{ width: 250, height: 250, position:'absolute', top:'10%' , left:'50%'}}
+                sx={{ width: 400, height: 400, position:'absolute', top:'30%' , left:'20%'}}
             />
-
             <Paper elevation={4} 
-                sx={{width: 500, height: 600, p: 4, position:'absolute', top:'50%' , left:'40%'}}
+                sx={{width: 500, height: 600, p: 4, position:'absolute', top:'20%' , left:'50%'}}
             >  
             
                 <Typography variant="overline" display="block" color="text.secondary" gutterBottom sx={{position:'absolute', top:'5%' , left:'5%'}}>
@@ -144,10 +138,7 @@ export default function MiPerfil(props) {
                 </Typography>
 
                 <Typography variant="h6" color="text.secondary" gutterBottom sx={{position:'absolute', top:'32%' , left:'5%'}}>
-                    <AccountCircleIcon /> <b>Correo:</b> <TextField id="outlined-basic" label="Actualizar correo" variant="outlined" size="small" defaultValue={correo} 
-                                                          onChange={(event) => {
-                                                            setCorreo(event.target.value);
-                                                          }}/>
+                    <AccountCircleIcon /> <b>Correo:</b> {correo}
                 </Typography>
                 
                  <Typography variant="h6" color="text.secondary" gutterBottom sx={{position:'absolute', top:'48%' , left:'5%'}}>

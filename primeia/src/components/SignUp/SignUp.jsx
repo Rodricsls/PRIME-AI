@@ -1,19 +1,17 @@
 import * as React from 'react'
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link} from 'react-router-dom';
 import './SignUp.css';
 import { EmojiEventsSharp } from '@mui/icons-material';
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import logo from './logo.png';
 //Función de Copyrigth
 
 function Copyright(props) {
@@ -95,21 +93,7 @@ export default function SignUp() {
   }
 
  
-  /*const handleSubmit = async (event) => {
-    event.preventDefault();
-    try{     
-      const response = await axios.post('http://localhost:8888/check-usuario',{correo:email});
-      const data= response.data;
-      if(data.existe){
-        SetValid(true);
-      }else{
-        const response= await axios.post('http://localhost:8888/signup', user);
-        const data= response.data;
-      }
-    }catch(error){
-      alert("Hubo un error", error);
-    }
-  };*/
+  
 
 
   //Chequea que la contraseña y la confirmación sean iguales
@@ -125,7 +109,7 @@ export default function SignUp() {
   
 
   const passwordcheck_value= ()=>{
-      if(password==confirmpassword){
+      if(password===confirmpassword){
           return true
       }else{
           return false
@@ -161,9 +145,7 @@ export default function SignUp() {
               alignItems: 'center'
             }}
           >
-            <Avatar sx={{ m: 0, bgcolor: '#6dbf26 ' }}>
-              <LockOutlinedIcon />
-            </Avatar>
+            <img src={logo} alt="Logo-Primeia" border="0" width="250px" height="200px" />
             <Typography component="h1" variant="h5">
               Sign Up
             </Typography>
@@ -294,7 +276,7 @@ export default function SignUp() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+            backgroundImage: 'url(https://sogetfitessex.co.uk/wp-content/uploads/revslider/fitness-slider-3-animated/5-layers.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

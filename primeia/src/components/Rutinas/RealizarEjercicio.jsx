@@ -5,17 +5,14 @@ import { useRef } from 'react';
 
 
 export default function RealizarEjercicio(props) {
-    const [terminado, setTerminado] = useState(false);
     const [realizando, setRealizando] = useState(true);
     const [contador, setContador] = useState(props.tiempo);
     const [series, setSeries] = useState(props.series);
     const timerId = useRef();
-    const seriesId = useRef();
     
     function restartCountdown() {
         setContador(props.tiempo);
         setRealizando(true);
-        setTerminado(false);
         clearInterval(timerId.current);
         timerId.current = setInterval(() => {
             setContador(prev => prev - 1);
@@ -33,7 +30,6 @@ export default function RealizarEjercicio(props) {
         if (contador === 0) {
             clearInterval(timerId.current);
             setRealizando(false);
-            setTerminado(true);
             setSeries(prev => prev - 1);
         }
     }, [contador, props.tiempo]);

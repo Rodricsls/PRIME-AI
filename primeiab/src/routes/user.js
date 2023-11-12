@@ -26,8 +26,8 @@ module.exports = (app) => {
     //Endpoint /ActualizarUser actualiza la informacion del usuario
     app.post('/ActualizarUser', async (req, res) => {
         try{
-            const query1=`UPDATE usuario SET correo=$1, peso =$2, estatura = $3  WHERE correo = $4`;
-            const values=[req.body.newCorreo , req.body.newPeso, req.body.newEstatura, req.body.oldCorreo];
+            const query1=`UPDATE usuario SET correo=$1, peso =$2, estatura = $3, imagen_usuario = $4  WHERE correo = $5`;
+            const values=[req.body.newCorreo , req.body.newPeso, req.body.newEstatura, req.body.newImagen ,req.body.oldCorreo];
             const result=await queryAsync(query1, values);            
 
                 res.json({ status: 0, mensaje: "Datos Actualizados Exitosamente!", resultado:true});

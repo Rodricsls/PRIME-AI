@@ -1,19 +1,15 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
-import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 import { useState } from "react";
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { AccordionDetails, Grid, IconButton } from '@mui/material';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -22,40 +18,30 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import MisEjercicios from './MisEjercicios';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+
 
 // ...
 export default function MisRutinas(props) {
   //Constantes a utilizar en el componente
   const Hoy = new Date();
-  const theme = useTheme();
-
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [MensajeError, setMensajeError] = useState('');
+  const [SnackbarSuccessOpen, setSnackbarSuccessOpen] = React.useState(false);
+  const [SnackbarFailOpen, setSnackbarFailOpen] = React.useState(false);
+  const [ConfirmationOpen, setOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Define isDrawerOpen in the state
   const [Day, setDay] = React.useState(Hoy.getDay());//Obtenemos que dia es hoy
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-  const [selectedTab, setSelectedTab] = useState(0);
   const [routineObject, setRoutineObject] = useState([]); //Objeto que contiene la rutina
 
-  const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
+  
 
   // Informacion de rutina para cada dia
-  const [rutinaLunes, setRutinaLunes] = useState([]);
-  const [rutinaMartes, setRutinaMartes] = useState([]);
-  const [rutinaMiercoles, setRutinaMiercoles] = useState([]);
-  const [rutinaJueves, setRutinaJueves] = useState([]);
-  const [rutinaViernes, setRutinaViernes] = useState([]);
-  const [rutinaSabado, setRutinaSabado] = useState([]);
-  const [rutinaDomingo, setRutinaDomingo] = useState([]);
   const [NombreRutina, setNombreRutina] = useState('');
   const [dayRoutine, setDayRoutine] = useState([]); //Dia de la rutina
   const [MisRutinas, setMisRutinas] = useState(true); //Indicar si estamos en el componente de rutinas
@@ -72,18 +58,38 @@ export default function MisRutinas(props) {
 
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo });
-        setRoutineObject(convertirObjetoAArray(response.data.rutina));
+  //Funcion para abrir el snackbar de exito
+  const SnackbarSuccessClose = () => {
+    setSnackbarSuccessOpen(false);
+  };
 
-        const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
-        setDayRoutine(updatedDayRoutine);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  //Funcion para abrir el snackbar de error
+  const SnackbarFailClose = () => {
+    setSnackbarFailOpen(false);
+  };
+
+  //Funcion para abrir el dialogo de confirmacion
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  //Funcion para cerrar el dialogo de confirmacion
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  async function fetchData() {
+    try {
+      const response = await axios.post('http://localhost:8888/routineObject', { correo: correo });
+      setRoutineObject(convertirObjetoAArray(response.data.rutina));
+
+      const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
+      setDayRoutine(updatedDayRoutine);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
 
     fetchData();
     setMisEjercicios(false);
@@ -132,9 +138,24 @@ export default function MisRutinas(props) {
     return arrayResultado;
   }
 
-  const ref = React.useRef(null);
-
   console.log(dayRoutine);
+
+  //Funcion para eliminar una rutina
+  async function eliminarRutina(idr) {
+    setOpen(false);
+    try {
+      const response = await axios.post('http://localhost:8888/DeleteRutina', { correo:correo ,id_rutina: idr });
+      const data = response.data;
+      if (data.status === 1) {
+        setSnackbarSuccessOpen(true);
+        fetchData();
+      }
+    } catch (error) {
+      setMensajeError('Algo ha salido mal!');
+      setSnackbarFailOpen(true);
+    }
+  }
+  
 
 
   return (
@@ -182,20 +203,59 @@ export default function MisRutinas(props) {
                           Ver ejercicios
                         </Typography>
                       </IconButton>
-                      <IconButton color="secondary" aria-label="delete" component="span" sx={{ backgroundColor: 'red', borderRadius: 2 }}>
+                      <IconButton color="secondary" aria-label="delete" component="span" sx={{ backgroundColor: 'red', borderRadius: 2 }} onClick={handleClickOpen}>
                         <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                           Borrar Rutina
                         </Typography>
                       </IconButton>
+                      <Dialog 
+                        open={ConfirmationOpen}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Esta seguro que desea eliminar esta rutina?"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Una vez eliminada no podra recuperarla, la unica opcion es crear una nueva rutina.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleClose}>Cancelar</Button>
+                          <Button onClick={() => eliminarRutina(ejercicio.idr)} autoFocus>
+                            Confirmar
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                     </AccordionDetails>
                   </Accordion>
+                  
                 ))
               )}
             </Paper>
           </Grid>
         </Grid>
+        
+                    
+
+            <Snackbar open={SnackbarSuccessOpen} autoHideDuration={6000} onClose={SnackbarSuccessClose}>
+              <MuiAlert elevation={6} variant="filled" onClose={SnackbarSuccessClose} severity="success" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+                Rutina Eliminada Exitosamente!
+              </MuiAlert>
+            </Snackbar>
+
+            <Snackbar open={SnackbarFailOpen} autoHideDuration={6000} onClose={SnackbarFailClose}>
+              <MuiAlert elevation={6} variant="filled" onClose={SnackbarFailClose} severity="error" sx={{ width: '20%', position:'fixed', left:'78%', top:'90%' }}>
+                {MensajeError}
+              </MuiAlert>
+            </Snackbar>
       </Container>
       : '' /* Acaba el componente de Rutinas*/}
+
+
+
 
       {Ejercicios ? /*Si estamos en el componente de ejercicios*/
         <MisEjercicios email={correo} open={open} dayRoutine = {dayRoutine} setRutinasPage = {props.setRutinasPage} />
