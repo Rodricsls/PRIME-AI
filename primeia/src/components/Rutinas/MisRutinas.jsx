@@ -258,7 +258,7 @@ export default function MisRutinas(props) {
 
 
       {Ejercicios ? /*Si estamos en el componente de ejercicios*/
-        <MisEjercicios email={correo} open={open} dayRoutine = {dayRoutine} setRutinasPage = {props.setRutinasPage} />
+        <MisEjercicios email={correo} open={open} dayRoutine = {dayRoutine} setRutinasPage = {props.setRutinasPage} dia = {Day}  />
         : '' /* Acaba el componente de ejercicios*/}
 
       <BottomNavigation

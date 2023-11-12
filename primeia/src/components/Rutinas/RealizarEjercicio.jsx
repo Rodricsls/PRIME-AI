@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Paper, IconButton, Typography } from '@mui/material';
 import ClockLoader from "react-spinners/ClockLoader";
 import { useRef } from 'react';
+import axios from 'axios';
 
 
 export default function RealizarEjercicio(props) {
@@ -9,7 +10,11 @@ export default function RealizarEjercicio(props) {
     const [contador, setContador] = useState(props.tiempo);
     const [series, setSeries] = useState(props.series);
     const timerId = useRef();
-    
+    const correo = props.correo;
+    const id_rutina = props.id_rutina;
+    const id_ejercicio = props.ejercicio.id_ejercicio;
+    const dia = props.dia;
+
     function restartCountdown() {
         setContador(props.tiempo);
         setRealizando(true);
@@ -34,16 +39,54 @@ export default function RealizarEjercicio(props) {
         }
     }, [contador, props.tiempo]);
 
-    function finalizar() {
-        
+    async function finalizar() {
+        let diaEjercicio = '';
+        if(dia === 1){
+            diaEjercicio = 'Lunes';
+        }else if(dia === 2){
+            diaEjercicio = 'Martes';
+        }else if(dia === 3){
+            diaEjercicio = 'Miércoles';
+        }else if(dia === 4){
+            diaEjercicio = 'Jueves';
+        }else if(dia === 5){
+            diaEjercicio = 'Viernes';
+        }else if(dia === 6){
+            diaEjercicio = 'Sábado';
+        }else if(dia === 0){
+            diaEjercicio = 'Domingo';
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8888/FinishEjercicio', {id_rutina : id_rutina, id_ejercicio: id_ejercicio, dia : diaEjercicio, correo: correo });
+            const data= response.data;
+            if(data.status === 1){
+                props.setEjerciciosPage(true);
+                props.setRealizarEjerciciosPage(false);
+            }
+            
+          } catch (error) {
+            console.error(error);
+          }
+
+        console.log("Finalizar");
+        console.log("Correo: " + correo);
+        console.log("Id rutina: " + id_rutina);
+        console.log("Id ejercicio: " + id_ejercicio);
+        console.log("Dia: " + diaEjercicio);
     }
 
     return (
         <Grid container direction="column" alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
+            <Grid item xs={12}>
+                <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    {props.ejercicio.nombre_ejercicio}
+                </Typography>
+            </Grid>
             {props.tiempo === 0 ? /*Si el ejercicio es de repeticiones*/ 
                 <Grid item>
                     <Paper sx={{ display: 'flex', flexDirection: 'column', height: 60, width: 900, alignItems: 'center', backgroundColor: '#8ad449' }} >
-                        <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }}>
+                        <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }} onClick={() => finalizar()}>
                             <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                                 Finalizar
                             </Typography>
@@ -69,7 +112,7 @@ export default function RealizarEjercicio(props) {
                         </Typography>
                         {contador === 0 && series === 0 ? /*Si ya termino todas las series*/
                             <Paper sx={{ display: 'flex', flexDirection: 'column', height: 60, width: 900, alignItems: 'center', backgroundColor: '#8ad449' }} >
-                                <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }}>
+                                <IconButton edge="start" color="inherit" sx={{ width: '100%', height: '100%' }} onClick={() => finalizar()}>
                                     <Typography component="h1" variant="h6" color="white" noWrap sx={{ flexGrow: 1 }}>
                                         Finalizar
                                     </Typography>

@@ -28,8 +28,11 @@ function MisEjercicios(props) {
     const [series, setSeries] = useState(0);
     const [repeticiones, setRepeticiones] = useState(0);
     const [tiempo, setTiempo] = useState(0);
-
-
+    const [ejercicioActual, setEjercicioActual] = useState({});
+    const [nombreEjercicio, setNombreEjercicio] = useState('');
+    const correo = props.email;
+    const dia = props.dia;
+    const id_rutina = props.dayRoutine[0].idr;
     useEffect(() => {
         setEjercicios(props.dayRoutine[0].ejercicios);
     }, []);
@@ -41,6 +44,8 @@ function MisEjercicios(props) {
         setSeries(ejercicio.series);
         setRepeticiones(ejercicio.repeticiones);
         setTiempo(ejercicio.tiempo_ejercicio);
+        setNombreEjercicio(ejercicio.nombre_ejercicio);
+        setEjercicioActual(ejercicio);
         setEjerciciosPage(false); 
         setRealizarEjercicioPage(true);
     }
@@ -153,7 +158,8 @@ function MisEjercicios(props) {
                         </Grid>
                     </Container>
                 : ''}
-            {RealizarEjercicioPage ? <RealizarEjercicio series ={series} repeticiones = {repeticiones} tiempo = {tiempo}  /> : ''}
+            {RealizarEjercicioPage ? <RealizarEjercicio series ={series} repeticiones = {repeticiones} tiempo = {tiempo} ejercicio = {ejercicioActual} correo = {correo} nombreEjercicio = {nombreEjercicio}
+                                    dia = {dia} id_rutina = {id_rutina} setEjerciciosPage = {setEjerciciosPage} setRealizarEjercicioPage = {setRealizarEjercicioPage} /> : ''}
 
             </Box>
     );

@@ -69,4 +69,19 @@ module.exports = (app) => {
         
     });
 
+    app.post('/FinishEjercicio', async (req, res) => {
+        try{
+            const query1=`SELECT gestor_ejercicios($1, $2, $3, $4)`;
+            const values=[req.body.id_rutina, req.body.id_ejercicio, req.body.dia, req.body.correo];
+            const result=await queryAsync(query1, values);            
+
+                res.json({ status: 1, mensaje: "Ejercicio Terminado exitosamente!"});
+                
+            
+        }catch(error){
+            res.json({ status: 0, mensaje: "Error en el servidor" + error.message});
+        }
+        
+    });
+
 }
