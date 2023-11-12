@@ -18,6 +18,8 @@ const rutinaPersonalizada = `SELECT rutina_personalizada.completado, rutina_pers
 const rutinaPersonalizadaDia = `SELECT * FROM rutina_personalizada WHERE id_rutina = $1 AND dia = $2`;
 /* Select the id_diet relationated with a mail */   
 const dietaId = `SELECT id_dieta FROM asignar_dietas WHERE correo = $1`;
+/* Select the name of routine */
+const rutinaNombre = `SELECT nombre FROM asignar_rutinas WHERE correo = $1`;
 /* Select all the dishes including description, dish_id relationated with an especific diet_id, day and time */ 
 const platosAgregados = `SELECT platos_agregados.id_plato, platos.dia, platos.descripcion, platos.tiempo FROM platos_agregados INNER JOIN platos ON platos_agregados.id_plato = platos.id_plato WHERE platos_agregados.id_dieta = $1 AND platos_agregados.dia = $2`;
 /* Selec all the days that a routine is relationated with a day */  
@@ -56,5 +58,6 @@ module.exports={
     completedWeek,
     streak,
     topThreeStreaks,
-    usuarios
+    usuarios,
+    rutinaNombre
 }

@@ -8,29 +8,38 @@ import Home from './components/Home/Home'
 import MiPerfil from './components/MiPerfil/MiPerfil'
 import Cuestionario from './components/Cuestionario/stepper/Cuestionario';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
-
+import CreateRoutine from './components/CreateRoutine/CreateRoutine';
+import axios from 'axios';
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
+import ProtectedRoute from './protected';
+
+
+
 
 const router = createBrowserRouter([
   {
-    path:'/',
-    element:<Login/>
+    path: '/',
+    element: <Login />,
   },
   {
-    path:'/SignUp',
-    element:<SignUp/>
+    path: '/SignUp',
+    element: <SignUp />,
   },
   {
-    path: '/Home',
-    element:<Home/>
+    path: '/Home/*',
+    element: <ProtectedRoute><Home /></ProtectedRoute>,
   },
   {
-    path: '/MiPerfil',
-    element:<MiPerfil/>
+    path: '/MiPerfil/*',
+    element: <ProtectedRoute><MiPerfil /></ProtectedRoute>,
   },
   {
-    path:'/Cuestionario',
-    element:<Cuestionario/>
+    path: '/Cuestionario',
+    element: <Cuestionario />,
+  },
+  {
+    path:'/CreateRoutine/*',
+    element:<ProtectedRoute><CreateRoutine/></ProtectedRoute>
   }
 ]);
 

@@ -84,7 +84,8 @@ export default function MisDietas(props) {
     // Obtener datos de la API
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:8888/dietObject', { correo: mail });
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8888/dietObject', { correo: mail }, { headers:{Authorization:`Bearer ${token}`} });
         setDietObject(convertirObjetoAArray(response.data.dieta));
       } catch (error) {
         console.error(error);
