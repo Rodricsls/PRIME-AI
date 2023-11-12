@@ -73,6 +73,8 @@ export default function MisRutinas(props) {
         const token = localStorage.getItem('token');
         const response = await axios.post('http://localhost:8888/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
         setRoutineObject(convertirObjetoAArray(response.data.rutina));
+        const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
+        setDayRoutine(updatedDayRoutine);
       } catch (error) {
         console.error(error);
       }
