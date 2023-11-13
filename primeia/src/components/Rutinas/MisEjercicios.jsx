@@ -64,7 +64,7 @@ function MisEjercicios(props) {
                             <Grid item xs={12} container spacing={2} sx={{paddingBottom : 10}}>
                                 <div  style={{ width: '100%' }}>
                                     {ejercicios.map((ejercicio, index) => (
-                                        <Grid container spacing={2} direction="column">
+                                        <Grid key={ejercicio.id_ejercicio}   container spacing={2} direction="column">
                                             <Grid item xs={12} md={6} lg={4} key={index}>
                                                 <Card sx={{ height: '100%', width: '50%', margin: '0 auto', display: 'flex', flexDirection: 'column', marginBottom: '1cm' }}>
                                                     <CardHeader
@@ -76,7 +76,7 @@ function MisEjercicios(props) {
                                                     <CardMedia
                                                         component="img"
                                                         height="300"
-                                                        image={'https://img.freepik.com/vector-premium/lindo-hombre-levantando-mancuernas-fitness-gym-dibujos-animados-vector-icono-ilustracion-icono-deporte-personas-aislado_138676-5450.jpg?w=826'} // pass image source as prop
+                                                        image={ejercicio.imagen_ejercicio === '#' ? 'https://img.freepik.com/vector-premium/lindo-hombre-levantando-mancuernas-fitness-gym-dibujos-animados-vector-icono-ilustracion-icono-deporte-personas-aislado_138676-5450.jpg?w=826' : require(`./Eimg/${ejercicio.imagen_ejercicio}`)}
                                                         alt={ejercicio.nombre_ejercicio}
                                                     />
                                                     <Typography align="center" sx={{ fontSize: '1.2rem',  }}>
