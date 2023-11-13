@@ -99,25 +99,44 @@ module.exports = (app) => {
         try{
             // Generate workout routine using AI model
             const days=req.body.dias;
-            const peticion= Routine_AI.createRequest(req.body.tipo_ejercicio,req.body.edad,req.body.peso,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo, req.body.genero);
+            const peticion= Routine_AI.createRequest(req.body.tipo_ejercicio,req.body.edad,req.body.peso,req.body.genero,req.body.estatura,req.body.dedicacion,days,req.body.tiempo, req.body.equipo);
             const routine= await Routine_AI.RoutineRequest(peticion);
             let routine_array=Routine_AI.Parser(routine);
+            const date=new Date().getDay();
+            let day_c;
+            switch(date){
+                case 0:{day_c="Domingo";break;}
+                case 1:{day_c="Lunes";break;}
+                case 2:{day_c="Martes";break;}
+                case 3:{day_c="Miércoles";break;}
+                case 4:{day_c="Jueves";break;}
+                case 5:{day_c="Viernes";break;}
+                case 6:{day_c="Sábado";break;}
+            }
              // Insert workout routine data into database
             const tipo = req.body.tipo_ejercicio+" "+req.body.correo;
+            console.log("aca1")
             await queryAsync(insert.Rutina, [tipo]);
+            console.log("aca2")
             const rutina_id=(await queryAsync(select.rutinaIdS, [tipo])).rows[0].id_rutina;
+            console.log("aca3")
             await queryAsync (insert.rutina_asignar, [req.body.correo, rutina_id, req.body.nombre_rutina]);
+            console.log("aca4")
             for (i=0; i<routine_array.length; i++){
                 let Obj_routine=Routine_AI.simplifier(routine_array[i]);
                 const vef_ejercicio=await queryAsync(verify.ejercicio_exist, [Obj_routine.ejercicio]);
+                console.log("aca5")
                 if(vef_ejercicio.rows[0].count==0){
                     await queryAsync(insert.Ejercicios, [Obj_routine.ejercicio, Obj_routine.musculo]);
+                    console.log("aca6")
                 }
                 const ejercicio_id= (await queryAsync(select.EjercicioidS, [Obj_routine.ejercicio])).rows[0].id_ejercicio;
+                let complete=(Obj_routine.dia==day_c?"hoy":"aun");
+
                 if(Obj_routine.tipo=='Repeticiones'){
-                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, Obj_routine.repeticiones, 0,Obj_routine.series, Obj_routine.dia, complete]);
                 }else{
-                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia]);
+                    await queryAsync(insert.rutina_personalizada,[rutina_id, ejercicio_id, 0, Obj_routine.repeticiones ,Obj_routine.series, Obj_routine.dia, complete]);
                 }
             }
             // Return success message if user was registered successfully

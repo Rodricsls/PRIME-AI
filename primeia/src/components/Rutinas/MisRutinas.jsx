@@ -153,7 +153,7 @@ export default function MisRutinas(props) {
   async function eliminarRutina(idr) {
     setOpen(false);
     try {
-      const response = await axios.post('http://localhost:8888/DeleteRutina', { correo:correo ,id_rutina: idr });
+      const response = await axios.post('http://localhost:8888/DeleteRutina', { correo:correo ,id_rutina: idr }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data;
       if (data.status === 1) {
         setSnackbarSuccessOpen(true);
