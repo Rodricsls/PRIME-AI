@@ -24,18 +24,7 @@ import { FitnessCenter, SportsGymnastics } from '@mui/icons-material';
 
 
 const defaultTheme = createTheme();
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Prime IA
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 export default function App() {
   //Constantes a utilizar en el componente
@@ -204,6 +193,7 @@ export default function App() {
                     Crear Cuenta
                   </Button>
                 </Link>
+
                 
               </Box>
             </Box>

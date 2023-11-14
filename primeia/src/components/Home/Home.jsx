@@ -134,6 +134,7 @@ export default function Home() {
       const data = response.data;
       setDayProgress(data.progreso);
     } catch (error) {
+      setDayProgress(0);
       console.log(error.response);
     }
   }
@@ -188,12 +189,22 @@ export default function Home() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post('http://localhost:8888/weekProgress', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
+      console.log(response);
       const data = response.data;
-      console.log(data.total);
-      setTotalWeek(data.total);
-      console.log(totalWeek);
-      setCompletedWeek(data.completed);
+
+      if(data.progreso==0){
+        setTotalWeek(0);
+        setCompletedWeek(0);
+      }else{
+        console.log(data.total);
+        setTotalWeek(data.total);
+        console.log(totalWeek);
+        setCompletedWeek(data.completed);
+      }
+      
     } catch (error) {
+      setTotalWeek(0);
+      setCompletedWeek(0);
       console.log(error.response);
     }
   }

@@ -10,7 +10,7 @@ const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 module.exports = (app) => {
     //endpoint construct routineObject
-    app.post('/routineObject', authenticateToken,async (req, res) => {
+    app.post('/routineObject',async (req, res) => {
         const routineObject = {Domingo:[],Lunes:[],Martes:[],Miercoles:[],Jueves:[],Viernes:[],Sabado:[]};
         const correo=req.body.correo;
         console.log(correo);
@@ -22,6 +22,10 @@ module.exports = (app) => {
             const ids=routines.rows;
             const nombres=name.rows;
             console.log(ids);
+            if(ids.length==0){
+                res.json({ status: 0, mensaje: "No hay rutinas asignadas"});
+                return;
+            }
             for (i=0; i<ids.length; i++){
                 const dias= await queryAsync(select.diasRutina, [ids[i].id_rutina]);
                 console.log(2);
@@ -61,7 +65,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/DeleteRutina', async (req, res) => {
+    app.post('/DeleteRutina', authenticateToken,async (req, res) => {
         try{
             const query1=`DELETE FROM asignar_rutinas WHERE id_rutina = $2 and correo =$1`;
             const values=[req.body.correo, req.body.id_rutina];
@@ -76,7 +80,7 @@ module.exports = (app) => {
         
     });
 
-    app.post('/FinishEjercicio', async (req, res) => {
+    app.post('/FinishEjercicio',authenticateToken ,async (req, res) => {
         try{
             const query1=`SELECT gestor_ejercicios($1, $2, $3, $4)`;
             const values=[req.body.id_rutina, req.body.id_ejercicio, req.body.dia, req.body.correo];

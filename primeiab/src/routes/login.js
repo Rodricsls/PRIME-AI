@@ -4,6 +4,7 @@ const queryAsync = util.promisify(pool.query).bind(pool);
 const bcrypt = require("bcrypt");
 const select = require("./sql/SQuerys.js");
 const token=require("../middleware/authUser.js");
+
 const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 module.exports = (app) => {
@@ -37,6 +38,7 @@ module.exports = (app) => {
     }
     );
 
+   
 
 
 }

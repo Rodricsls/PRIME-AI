@@ -10,7 +10,6 @@ import Cuestionario from './components/Cuestionario/stepper/Cuestionario';
 import LoadingScreen from './components/LoadingScreen/LoadingScreen';
 import CreateDiet from './components/CreateDiet/CreateDiet';
 import CreateRoutine from './components/CreateRoutine/CreateRoutine';
-import axios from 'axios';
 import {createBrowserRouter, RouterProvider ,Route, Routes} from 'react-router-dom';
 import ProtectedRoute from './protected';
 
@@ -45,6 +44,10 @@ const router = createBrowserRouter([
   {
     path:'/CreateDiet/*',
     element:<ProtectedRoute><CreateDiet/></ProtectedRoute>
+  },
+  {
+    path:'/LoadingScreen',
+    element:<LoadingScreen/>
   }
 ]);
 

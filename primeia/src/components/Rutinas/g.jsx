@@ -1,4 +1,4 @@
-import React from 'react';
+mport React from 'react';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import Paper from '@mui/material/Paper';
@@ -71,7 +71,20 @@ export default function MisRutinas(props) {
     setSnackbarSuccessOpen(false);
   };
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
+        setRoutineObject(convertirObjetoAArray(response.data.rutina));
+        const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
+        setDayRoutine(updatedDayRoutine);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   //Funcion para abrir el snackbar de error
   const SnackbarFailClose = () => {
@@ -88,7 +101,22 @@ export default function MisRutinas(props) {
   };
 
 
+  async function fetchData() {
+    try {
+      const response = await axios.post('http://localhost:8888/routineObject', { correo: correo });
+      setRoutineObject(convertirObjetoAArray(response.data.rutina));
 
+      const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
+      setDayRoutine(updatedDayRoutine);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+
+    fetchData();
+    setMisEjercicios(false);
+  }, []);
 
   function convertirObjetoAArray(objeto) {
     const arrayResultante = [];
@@ -132,20 +160,6 @@ export default function MisRutinas(props) {
 
     return arrayResultado;
   }
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
-        setRoutineObject(convertirObjetoAArray(response.data.rutina));
-        const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
-        setDayRoutine(updatedDayRoutine);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   console.log(dayRoutine);
 
@@ -157,6 +171,7 @@ export default function MisRutinas(props) {
       const data = response.data;
       if (data.status === 1) {
         setSnackbarSuccessOpen(true);
+        fetchData();
       }
     } catch (error) {
       setMensajeError('Algo ha salido mal!');
@@ -179,7 +194,7 @@ export default function MisRutinas(props) {
   return (
     
     <Box style={{ overflowX: 'auto' }}>
-      {MisRutinas ? /*Si estamos en el componente de rutinas*/
+      {MisRutinas ? /Si estamos en el componente de rutinas/
       <Container maxWidth="lg" sx={{ mt: 6, mb: 4 }}>
         <Grid container spacing={5}>
           <Grid item xs={4} md={4} lg={4} sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -275,7 +290,7 @@ export default function MisRutinas(props) {
 
 
 
-      {Ejercicios ? /*Si estamos en el componente de ejercicios*/
+      {Ejercicios ? /Si estamos en el componente de ejercicios/
         <MisEjercicios email={correo} open={open} dayRoutine = {dayRoutine} setRutinasPage = {props.setRutinasPage} dia = {Day}  />
         : '' /* Acaba el componente de ejercicios*/}
 
