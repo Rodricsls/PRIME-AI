@@ -58,7 +58,8 @@ export default function RealizarEjercicio(props) {
         }
 
         try {
-            const response = await axios.post('http://localhost:8888/FinishEjercicio', {id_rutina : id_rutina, id_ejercicio: id_ejercicio, dia : diaEjercicio, correo: correo });
+            const token = localStorage.getItem('token');
+            const response = await axios.post('http://localhost:8888/FinishEjercicio', {id_rutina : id_rutina, id_ejercicio: id_ejercicio, dia : diaEjercicio, correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
             const data= response.data;
             if(data.status === 1){
                 props.setEjerciciosPage(true);
@@ -79,9 +80,6 @@ export default function RealizarEjercicio(props) {
     return (
         <Grid container direction="column" alignItems="center" justifyContent="center" sx={{ height: '100%' }}>
             <Grid item xs={12}>
-                <Typography variant="h4" align="center" sx={{ fontWeight: 'bold', mb: 2 }}>
-                    {props.ejercicio.nombre_ejercicio}
-                </Typography>
             </Grid>
             {props.tiempo === 0 ? /*Si el ejercicio es de repeticiones*/ 
                 <Grid item>
