@@ -130,7 +130,7 @@ export default function Home() {
   // Función para obtener el progreso del día
   async function getDayProgress(Email, day) {
     try {
-      const response = await axios.post('http://localhost:8888/dayProgress', { correo: Email, dia: day }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      const response = await axios.post('https://primeai.azurewebsites.net/dayProgress', { correo: Email, dia: day }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data;
       setDayProgress(data.progreso);
     } catch (error) {
@@ -142,7 +142,7 @@ export default function Home() {
   // Función para obtener la racha
   async function getRacha(Email) {
     try {
-      const response = await axios.post('http://localhost:8888/streak', { correo: Email }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      const response = await axios.post('https://primeai.azurewebsites.net/streak', { correo: Email }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data.streak;
       setRacha(data.racha);
       console.log(Racha);
@@ -164,7 +164,7 @@ export default function Home() {
   async function getData(Email) {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8888/user', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
+      const response = await axios.post('https://primeai.azurewebsites.net/user', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
       const data = response.data;
       if (data.resultado) {
         console.log(data);
@@ -188,7 +188,7 @@ export default function Home() {
   async function getWeekProgress(Email) {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8888/weekProgress', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
+      const response = await axios.post('https://primeai.azurewebsites.net/weekProgress', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
       console.log(response);
       const data = response.data;
 
@@ -213,7 +213,7 @@ export default function Home() {
   async function getTop3() {
     try {
       const token = localStorage.getItem('token');
-      const result = await axios.post('http://localhost:8888/topThreeStreaks',{}, { headers:{Authorization:`Bearer ${token}`} });
+      const result = await axios.post('https://primeai.azurewebsites.net/topThreeStreaks',{}, { headers:{Authorization:`Bearer ${token}`} });
       const data = result.data;
       setTop3(data.topThreeStreaks);
     } catch (error) {
@@ -238,7 +238,7 @@ export default function Home() {
           navigate('/');
         } else {
           const response = await axios.post(
-            'http://localhost:8888/verificarToken',
+            'https://primeai.azurewebsites.net/verificarToken',
             {},
             { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
           );

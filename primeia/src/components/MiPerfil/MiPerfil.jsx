@@ -73,7 +73,7 @@ export default function MiPerfil(props) {
     async function ActualizarDatos(){
           setOpen(false);
           try{
-            const response = await axios.post('http://localhost:8888/ActualizarUser',{newCorreo:correo, newPeso:peso2, newEstatura:estatura2, newImagen:imagen_usuario2, oldCorreo:correo});
+            const response = await axios.post('https://primeai.azurewebsites.net/ActualizarUser',{newCorreo:correo, newPeso:peso2, newEstatura:estatura2, newImagen:imagen_usuario2, oldCorreo:correo});
             const data= response.data;
             
             console.log(data);

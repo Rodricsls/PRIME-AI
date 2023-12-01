@@ -136,7 +136,7 @@ export default function MisRutinas(props) {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8888/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post('https://primeai.azurewebsites.net/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
         setRoutineObject(convertirObjetoAArray(response.data.rutina));
         const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
         setDayRoutine(updatedDayRoutine);
@@ -153,7 +153,7 @@ export default function MisRutinas(props) {
   async function eliminarRutina(idr) {
     setOpen(false);
     try {
-      const response = await axios.post('http://localhost:8888/DeleteRutina', { correo:correo ,id_rutina: idr }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+      const response = await axios.post('https://primeai.azurewebsites.net/DeleteRutina', { correo:correo ,id_rutina: idr }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data;
       if (data.status === 1) {
         setSnackbarSuccessOpen(true);

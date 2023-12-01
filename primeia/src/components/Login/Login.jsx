@@ -56,7 +56,7 @@ export default function App() {
     const email = localStorage.getItem('email');
 
     if(token && email){
-      const response = await axios.post('http://localhost:8888/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
+      const response = await axios.post('https://primeai.azurewebsites.net/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
       const data= response.data;
       if(data.autenticacion){
         navigate("/Home", {state:{email:email}});
@@ -70,7 +70,7 @@ export default function App() {
 
       if (token) {
         const response = await axios.post(
-          'http://localhost:8888/verificarToken', // Ajusta la ruta según tu servidor
+          'https://primeai.azurewebsites.net/verificarToken', // Ajusta la ruta según tu servidor
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -97,7 +97,7 @@ export default function App() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try{  
-      const response = await axios.post('http://localhost:8888/login',{correo:email, contraseña:password});
+      const response = await axios.post('https://primeai.azurewebsites.net/login',{correo:email, contraseña:password});
       const data= response.data;
       if(data.autenticacion){
         setSnackbarSuccessOpen(true);
