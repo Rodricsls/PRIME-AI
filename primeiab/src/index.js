@@ -3,6 +3,7 @@ const { updateWeek, updateStreak, updateToday, updateNo } = require("./jobs/Task
 const app= require("./server");
 const cron = require('node-cron');
 const path = require('path');
+const express = require('express');
 require("./routes/signup")(app);
 require("./routes/login")(app);
 require("./routes/user")(app);
@@ -75,6 +76,7 @@ cron.schedule('58 11 * * *', () =>{
 // Production script
 app.use(express.static("../../primeia/build"))
 app.get("*",(req, res) =>{
+    console.log(__dirname);
     res.sendFile(path.resolve(__dirname, "../../", "primeia", "build", "index.html"))
 })
 app.listen(app.get("port"), 
