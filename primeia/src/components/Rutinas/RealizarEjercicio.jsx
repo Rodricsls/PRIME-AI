@@ -59,7 +59,7 @@ export default function RealizarEjercicio(props) {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:8888/FinishEjercicio', {id_rutina : id_rutina, id_ejercicio: id_ejercicio, dia : diaEjercicio, correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
+            const response = await axios.post('https://primeai-api.azurewebsites.net/FinishEjercicio', {id_rutina : id_rutina, id_ejercicio: id_ejercicio, dia : diaEjercicio, correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
             const data= response.data;
             if(data.status === 1){
                 props.setEjerciciosPage(true);

@@ -123,7 +123,7 @@ const SnackbarFailClose = () => {
       setLoading(true);
       try{  
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:8888/createDiet',{correo:email, 
+        const response = await axios.post('https://primeai-api.azurewebsites.net/createDiet',{correo:email, 
                                                                           peso:peso, estatura:estatura,edad:edad, dedicacion:dedicacion, 
                                                                            objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero}, { headers:{Authorization:`Bearer ${token}`}});        setLoading(false);                                                                  
         const data= response.data;
