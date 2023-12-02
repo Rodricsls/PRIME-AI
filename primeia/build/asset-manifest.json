@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.ea4c1470.css",
-    "main.js": "/static/js/main.7b8e6cf0.js",
+    "main.js": "/static/js/main.2abaa9c5.js",
     "static/js/787.e4008224.chunk.js": "/static/js/787.e4008224.chunk.js",
     "static/media/imageB.jpg": "/static/media/imageB.b8b01a43a62d0893356d.jpg",
     "static/media/plancha_lateral.jpg": "/static/media/plancha_lateral.9db89124508af556dbc6.jpg",
@@ -41,11 +41,11 @@
     "static/media/estiramiento_cuello.jpg": "/static/media/estiramiento_cuello.dfce122c573e6b346428.jpg",
     "index.html": "/index.html",
     "main.ea4c1470.css.map": "/static/css/main.ea4c1470.css.map",
-    "main.7b8e6cf0.js.map": "/static/js/main.7b8e6cf0.js.map",
+    "main.2abaa9c5.js.map": "/static/js/main.2abaa9c5.js.map",
     "787.e4008224.chunk.js.map": "/static/js/787.e4008224.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ea4c1470.css",
-    "static/js/main.7b8e6cf0.js"
+    "static/js/main.2abaa9c5.js"
   ]
 }

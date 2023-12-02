@@ -198,7 +198,7 @@ const SnackbarFailClose = () => {
       }
       setLoading(true);
       try{  
-        const response = await axios.post('https://primeai.azurewebsites.net/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
+        const response = await axios.post('https://primeai-api.azurewebsites.net/signup',{correo:email, contraseña:password, nombre: name, apellido : apellido,
                                                                           peso:peso, estatura:estatura,imagen_usuario:"avatar.jpg", edad:edad,tipo_ejercicio:tipo_ejercicio ,
                                                                           dias:dia,tiempo:tiempo, dedicacion:dedicacion, 
                                                                           equipo:equipo, objetivo:objetivo, restricciones:restriccionAlimenticia, alimentacion:alimentacion, genero:genero, nombre_rutina:NombreRutina});

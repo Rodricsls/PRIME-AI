@@ -7,6 +7,6 @@ app.use(express.json());
 
 app.use(cors());
 
-app.set("port", 3001);
+app.set("port", 8888);
 
 module.exports=app;

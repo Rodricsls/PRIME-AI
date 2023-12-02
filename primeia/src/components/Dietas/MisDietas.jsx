@@ -85,7 +85,7 @@ export default function MisDietas(props) {
   const handleDeleteDiet = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('https://primeai.azurewebsites.net/deleteDiet',{correo:correo}, { headers:{Authorization:`Bearer ${token}`} });
+      const response = await axios.post('https://primeai-api.azurewebsites.net/deleteDiet',{correo:correo}, { headers:{Authorization:`Bearer ${token}`} });
       setDietObject(convertirObjetoAArray(response.data.dieta));
     } catch (error) {
       console.error(error);
@@ -106,7 +106,7 @@ export default function MisDietas(props) {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('https://primeai.azurewebsites.net/dietObject', { correo: correo }, { headers:{Authorization:`Bearer ${token}`} });
+        const response = await axios.post('https://primeai-api.azurewebsites.net/dietObject', { correo: correo }, { headers:{Authorization:`Bearer ${token}`} });
         setDietObject(convertirObjetoAArray(response.data.dieta));
       } catch (error) {
         console.error(error);

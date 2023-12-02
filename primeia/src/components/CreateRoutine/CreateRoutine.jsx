@@ -137,7 +137,7 @@ const SnackbarFailClose = () => {
   async function crearRutina(){
       try{ 
         const token = localStorage.getItem('token'); 
-        const response = await axios.post('https://primeai.azurewebsites.net/createRoutine',{correo:correoUsuario,
+        const response = await axios.post('https://primeai-api.azurewebsites.net/createRoutine',{correo:correoUsuario,
                                                                                   tipo_ejercicio:tipo_ejercicio,
                                                                                   edad:edadUsuario,
                                                                                   peso:pesoUsuario,

@@ -56,7 +56,7 @@ export default function App() {
     const email = localStorage.getItem('email');
 
     if(token && email){
-      const response = await axios.post('https://primeai.azurewebsites.net/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
+      const response = await axios.post('https://primeai-api.azurewebsites.net/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
       const data= response.data;
       if(data.autenticacion){
         navigate("/Home", {state:{email:email}});
@@ -64,28 +64,6 @@ export default function App() {
     }
   }
 
-  const autenticacion = async () => {
-    try {
-      const token = localStorage.getItem('token');
-
-      if (token) {
-        const response = await axios.post(
-          'https://primeai.azurewebsites.net/verificarToken', // Ajusta la ruta según tu servidor
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        if (response.data.autenticacion) {
-            setIsAuthenticated(true);
-        } else {
-            alert("Su sesión ha expirado");
-
-        }
-      }
-    } catch (error) {
-      console.error('Error verifying token:', error);
-    }
-  };
 
 
   React.useEffect (() => {
@@ -97,14 +75,16 @@ export default function App() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try{  
-      const response = await axios.post('https://primeai.azurewebsites.net/login',{correo:email, contraseña:password});
+      const response = await axios.post('https://primeai-api.azurewebsites.net/login',{correo:email, contraseña:password});
       const data= response.data;
       if(data.autenticacion){
         setSnackbarSuccessOpen(true);
         console.log(data.token);
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
+        
         navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
+        console.log("hola");
         SetValid(false);
       }else{
         SetValid(true);
