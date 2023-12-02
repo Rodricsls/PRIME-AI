@@ -11,7 +11,7 @@ function ProtectedRoute({ children }) {
     const verifyToken = async () => {
       const token = localStorage.getItem('token');
       if (token) {
-        const response = await axios.post('http://localhost:8888/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post('https://primeai-api.azurewebsites.net/verificarToken', {}, { headers: { Authorization: `Bearer ${token}` } });
         setIsAuthenticated(response.data.autenticacion);
       }
       setIsLoading(false);

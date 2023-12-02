@@ -136,7 +136,7 @@ export default function MisRutinas(props) {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('hhttps://primeai-api.azurewebsites.net/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post('https://primeai-api.azurewebsites.net/routineObject', { correo: correo }, { headers: { Authorization: `Bearer ${token}` } });
         setRoutineObject(convertirObjetoAArray(response.data.rutina));
         const updatedDayRoutine = objetoAArray(convertirObjetoAArray(response.data.rutina)[Day]).splice(1);
         setDayRoutine(updatedDayRoutine);
