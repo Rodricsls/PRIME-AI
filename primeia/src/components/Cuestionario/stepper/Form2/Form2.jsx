@@ -55,7 +55,7 @@ export default function CheckboxLabels(props) {
       </Typography>
 
       <RadioGroup value={props.tiempo} onChange={props.handleTiempoChange}  >
-        <FormControlLabel  value="20 minutos" aria-required control={<Radio/>} label="20 minutos" />
+        <FormControlLabel  value="20 minutos" aria-required control={<Radio/> } label="20 minutos" />
         <FormControlLabel value="30 minutos" aria-required control={<Radio />} label="30 minutos" />
         <FormControlLabel  value="40 minutos" aria-required control={<Radio/>} label="40 minutos" />
         <FormControlLabel value="1 hora o más" aria-required control={<Radio />} label="1 hora o más" />
