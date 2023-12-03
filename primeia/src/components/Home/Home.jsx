@@ -130,7 +130,6 @@ export default function Home() {
   // Función para obtener el progreso del día
   async function getDayProgress(Email, day) {
     try {
-      console.log("aca hay algo")
       const response = await axios.post('https://primeai-api.azurewebsites.net/dayProgress', { correo: Email, dia: day }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data;
       setDayProgress(data.progreso);
@@ -146,7 +145,6 @@ export default function Home() {
       const response = await axios.post('https://primeai-api.azurewebsites.net/streak', { correo: Email }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
       const data = response.data.streak;
       setRacha(data.racha);
-      console.log(Racha);
       setDiasRacha({
         Domingo: data.domingo,
         Lunes: data.lunes,
@@ -168,7 +166,6 @@ export default function Home() {
       const response = await axios.post('https://primeai-api.azurewebsites.net/user', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
       const data = response.data;
       if (data.resultado) {
-        console.log(data);
         setNombre(data.nombre);
         setApellido(data.apellido);
         setPeso(data.peso);
@@ -176,7 +173,6 @@ export default function Home() {
         setEdad(data.edad);
         setImagenUsuario(data.imagen_usuario);
         setGenero(data.genero);
-        console.log(data.genero)
       } else {
         alert(data.mensaje);
       }
@@ -190,16 +186,13 @@ export default function Home() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post('https://primeai-api.azurewebsites.net/weekProgress', { correo: Email },{ headers:{Authorization:`Bearer ${token}`}});
-      console.log(response);
       const data = response.data;
 
       if(data.progreso==0){
         setTotalWeek(0);
         setCompletedWeek(0);
       }else{
-        console.log(data.total);
         setTotalWeek(data.total);
-        console.log(totalWeek);
         setCompletedWeek(data.completed);
       }
       
@@ -238,7 +231,6 @@ export default function Home() {
           alert('No ha iniciado sesión');
           navigate('/');
         } else {
-          console.log( 'https://primeai-api.azurewebsites.net');
           const response = await axios.post(
             'https://primeai-api.azurewebsites.net/verificarToken',
             {},

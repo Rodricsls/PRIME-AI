@@ -207,10 +207,8 @@ const SnackbarFailClose = () => {
         if(data.status === 1){
           setSnackbarSuccessOpen(true);
           navigate("/"); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
-          console.log("Usuario registrado correctamente");
 
         }else{
-          console.log(data);
           setMensajeError('Ha ocurrido un error');
           setSnackbarFailOpen(true);
           

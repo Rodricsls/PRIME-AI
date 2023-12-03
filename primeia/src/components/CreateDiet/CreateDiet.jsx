@@ -129,12 +129,11 @@ const SnackbarFailClose = () => {
         const data= response.data;
         if(data.status === 1){
           setSnackbarSuccessOpen(true);
-          console.log(email)
+          
           navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
-          console.log("dieta creada correctamente");
+          
 
         }else{
-          console.log(data);
           setMensajeError('Ha ocurrido un error');
           setSnackbarFailOpen(true);
           

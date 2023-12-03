@@ -149,14 +149,11 @@ const SnackbarFailClose = () => {
                                                                                   genero:generoUsuario,
                                                                                   nombre_rutina:NombreRutina}, { headers:{Authorization:`Bearer ${token}`} });
         const data= response.data;
-        console.log(data);
         if(data.status === 1){
           setSnackbarSuccessOpen(true);
           navigate("/Home", {state:{email:correoUsuario}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
-          console.log("Rutina creada exitosamente");
 
         }else{
-          console.log(data);
           setMensajeError('Ha ocurrido un error');
           setSnackbarFailOpen(true);
           

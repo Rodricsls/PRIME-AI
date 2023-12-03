@@ -147,7 +147,6 @@ export default function MisRutinas(props) {
     fetchData();
   }, []);
 
-  console.log(dayRoutine);
 
   //Funcion para eliminar una rutina
   async function eliminarRutina(idr) {

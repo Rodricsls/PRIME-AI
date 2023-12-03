@@ -70,11 +70,7 @@ export default function RealizarEjercicio(props) {
             console.error(error);
           }
 
-        console.log("Finalizar");
-        console.log("Correo: " + correo);
-        console.log("Id rutina: " + id_rutina);
-        console.log("Id ejercicio: " + id_ejercicio);
-        console.log("Dia: " + diaEjercicio);
+       
     }
 
     return (
