@@ -75,8 +75,6 @@ export default function MiPerfil(props) {
           try{
             const response = await axios.post('https://primeai-api.azurewebsites.net/ActualizarUser',{newCorreo:correo, newPeso:peso2, newEstatura:estatura2, newImagen:imagen_usuario2, oldCorreo:correo});
             const data= response.data;
-            
-            console.log(data);
             if(data.resultado){
               setSnackbarSuccessOpen(true);
             }

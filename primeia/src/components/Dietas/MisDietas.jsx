@@ -143,9 +143,6 @@ export default function MisDietas(props) {
     return arrayResultante;
   }
 
-  // Impresión de dietObject en la consola
-  console.log(dietObject);
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Container maxWidth="lg">

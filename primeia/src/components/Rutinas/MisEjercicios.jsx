@@ -37,9 +37,6 @@ function MisEjercicios(props) {
         setEjercicios(props.dayRoutine[0].ejercicios);
     }, []);
 
-    console.log('ejercicios');
-    console.log(ejercicios);
-
     function startEjercicio(ejercicio) {
         setSeries(ejercicio.series);
         setRepeticiones(ejercicio.repeticiones);

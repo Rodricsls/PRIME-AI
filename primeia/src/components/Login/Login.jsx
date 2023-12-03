@@ -79,12 +79,10 @@ export default function App() {
       const data= response.data;
       if(data.autenticacion){
         setSnackbarSuccessOpen(true);
-        console.log(data.token);
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
         
         navigate("/Home", {state:{email:email}}); //navegamos a la pagina Home y enviamos el email para que sea utilizado en las demas paginas
-        console.log("hola");
         SetValid(false);
       }else{
         SetValid(true);

@@ -200,7 +200,7 @@ export default function MisRutinas(props) {
               {dayRoutine.length === 0 ? (
                 <Typography color="black" variant="body1" sx={{ mb: 4 }} >NO HAY RUTINAS EN ESTE DÍA</Typography>
               ) : (
-                dayRoutine.map((ejercicio, index) => ( console.log("aca",ejercicio),
+                dayRoutine.map((ejercicio, index) => ( 
                   <Accordion key={index} sx={{ width: '100%', maxWidth: 360, bgcolor: '#8ad449' }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <ListItem>
