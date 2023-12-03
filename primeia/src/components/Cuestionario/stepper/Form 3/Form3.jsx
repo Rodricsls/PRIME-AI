@@ -110,8 +110,8 @@ import './Form3.css';
         value={genero}
         onChange={handleGeneroChange}
         >
-              <FormControlLabel value="Masculino" control={<Radio />} label="Masculino" />
-              <FormControlLabel value="Femenino" control={<Radio />} label="Femenimo" />
+              <FormControlLabel value="Masculino" control={<Radio color='success'/>} label="Masculino" />
+              <FormControlLabel value="Femenino" control={<Radio color='success'/>} label="Femenimo" />
         </RadioGroup>
         
       </div>

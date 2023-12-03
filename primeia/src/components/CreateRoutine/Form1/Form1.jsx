@@ -20,18 +20,18 @@ export default function Form1(props) {
         ¿Que tanto le dedicas a tu actividad fisica durante la semana?
       </Typography>
       <RadioGroup value={props.dedicacion} onChange={props.handleDedicacionChange}  >
-        <FormControlLabel  value="Poca" aria-required control={<Radio/>} label="Poca" />
-        <FormControlLabel value="La Suficiente" aria-required control={<Radio />} label="La suficiente" />
-        <FormControlLabel  value="Considerable" aria-required control={<Radio/>} label="Considerable" />
-        <FormControlLabel value="Demasiado" aria-required control={<Radio />} label="Demasiado" />
+        <FormControlLabel  value="Poca" aria-required control={<Radio color='success'/>} label="Poca" />
+        <FormControlLabel value="La Suficiente" aria-required control={<Radio color='success'/>} label="La suficiente" />
+        <FormControlLabel  value="Considerable" aria-required control={<Radio color='success'/>} label="Considerable" />
+        <FormControlLabel value="Demasiado" aria-required control={<Radio color='success'/>} label="Demasiado" />
       </RadioGroup>
       <Typography>
         ¿Posees equipo para realizar ejercicios?
       </Typography>
 
       <RadioGroup value={props.equipo} onChange={props.handleEquipoChange} >
-        <FormControlLabel  value="dispone" aria-required control={<Radio/>} label="Sí" />
-        <FormControlLabel value="no dispone" aria-required control={<Radio />} label="No" />
+        <FormControlLabel  value="dispone" aria-required control={<Radio color='success'/>} label="Sí" />
+        <FormControlLabel value="no dispone" aria-required control={<Radio color='success'/>} label="No" />
       </RadioGroup>
 
 

@@ -21,31 +21,31 @@ export default function CheckboxLabels(props) {
 
       <FormGroup>
         <FormControlLabel
-          control={<Checkbox name="domingo" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="domingo" onChange={props.handleDiaChange} />}
           label="Domingo"
         />
         <FormControlLabel
-          control={<Checkbox name="lunes" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="lunes" onChange={props.handleDiaChange} />}
           label="Lunes"
         />
         <FormControlLabel
-          control={<Checkbox name="martes" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="martes" onChange={props.handleDiaChange} />}
           label="Martes"
         />
         <FormControlLabel
-          control={<Checkbox name="miercoles" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="miercoles" onChange={props.handleDiaChange} />}
           label="Miercoles"
         />
         <FormControlLabel
-          control={<Checkbox name="jueves" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="jueves" onChange={props.handleDiaChange} />}
           label="Jueves"
         />
         <FormControlLabel
-          control={<Checkbox name="viernes" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="viernes" onChange={props.handleDiaChange} />}
           label="Viernes"
         />
         <FormControlLabel
-          control={<Checkbox name="sabado" onChange={props.handleDiaChange} />}
+          control={<Checkbox color='success' name="sabado" onChange={props.handleDiaChange} />}
           label="Sabado"
         />
       </FormGroup>
@@ -55,10 +55,10 @@ export default function CheckboxLabels(props) {
       </Typography>
 
       <RadioGroup value={props.tiempo} onChange={props.handleTiempoChange}  >
-        <FormControlLabel  value="20 minutos" aria-required control={<Radio/>} label="20 minutos" />
-        <FormControlLabel value="30 minutos" aria-required control={<Radio />} label="30 minutos" />
-        <FormControlLabel  value="40 minutos" aria-required control={<Radio/>} label="40 minutos" />
-        <FormControlLabel value="1 hora o más" aria-required control={<Radio />} label="1 hora o más" />
+        <FormControlLabel  value="20 minutos" aria-required control={<Radio color='success'/>} label="20 minutos" />
+        <FormControlLabel value="30 minutos" aria-required control={<Radio color='success'/>} label="30 minutos" />
+        <FormControlLabel  value="40 minutos" aria-required control={<Radio color='success'/>} label="40 minutos" />
+        <FormControlLabel value="1 hora o más" aria-required control={<Radio color='success'/>} label="1 hora o más" />
       </RadioGroup>
 
       <Typography>
@@ -66,10 +66,10 @@ export default function CheckboxLabels(props) {
       </Typography>
 
       <RadioGroup value={props.objetivo} onChange={props.handleObjetivoChange}  >
-        <FormControlLabel  value="Pérdida de Peso" aria-required control={<Radio/>} label="Pérdida de Peso" />
-        <FormControlLabel value="Ganancia Muscular" aria-required control={<Radio />} label="Ganancia Muscular" />
-        <FormControlLabel  value="Mantenimiento de Peso saludable" aria-required control={<Radio/>} label="Mantenimiento de Peso saludable" />
-        <FormControlLabel value="Mejora de Salud CardioVascular" aria-required control={<Radio />} label="Mejora de Salud CardioVascular" />
+        <FormControlLabel  value="Pérdida de Peso" aria-required control={<Radio color='success'/>} label="Pérdida de Peso" />
+        <FormControlLabel value="Ganancia Muscular" aria-required control={<Radio color='success'/>} label="Ganancia Muscular" />
+        <FormControlLabel  value="Mantenimiento de Peso saludable" aria-required control={<Radio color='success'/>} label="Mantenimiento de Peso saludable" />
+        <FormControlLabel value="Mejora de Salud CardioVascular" aria-required control={<Radio color='success'/>} label="Mejora de Salud CardioVascular" />
       </RadioGroup>
 
       <Typography>
@@ -77,10 +77,10 @@ export default function CheckboxLabels(props) {
       </Typography>
 
       <RadioGroup value={props.tipo_ejercicio} onChange={props.handleTipoRutinaChange} >
-        <FormControlLabel  value="flexibilidad" aria-required control={<Radio/>} label="flexibilidad" />
-        <FormControlLabel value="Resistencia Física" aria-required control={<Radio />} label="Resistencia Física" />
-        <FormControlLabel  value="Calistenia" aria-required control={<Radio/>} label="Calistenia" />
-        <FormControlLabel value="Fuerza" aria-required control={<Radio />} label="Fuerza" />
+        <FormControlLabel  value="flexibilidad" aria-required control={<Radio color='success'/>} label="flexibilidad" />
+        <FormControlLabel value="Resistencia Física" aria-required control={<Radio color='success'/>} label="Resistencia Física" />
+        <FormControlLabel  value="Calistenia" aria-required control={<Radio color='success'/>} label="Calistenia" />
+        <FormControlLabel value="Fuerza" aria-required control={<Radio color='success'/>} label="Fuerza" />
       </RadioGroup>
 
       <Typography>
